@@ -1,6 +1,6 @@
-# Catholicon Technology Solutions
+# Arqora Technology Solutions
 
-Website for Catholicon Technology Solutions: tech solutions for every business.
+Website for Arqora Technology Solutions: tech solutions for every business.
 
 Built with Next.js and Tailwind CSS.
 

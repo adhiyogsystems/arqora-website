@@ -1,8 +1,8 @@
 /**
  * One place for everything that identifies the business.
- * TODO: switch PRODUCTION_URL if the final domain is different from catholicontech.com.
+ * TODO: switch PRODUCTION_URL if the final domain is different from arqoratech.com.
  */
-export const PRODUCTION_URL = "https://www.catholicontech.com";
+export const PRODUCTION_URL = "https://www.arqoratech.com";
 
 function resolveSiteUrl(): string {
   if (process.env.NODE_ENV === "production") return PRODUCTION_URL;
@@ -12,11 +12,11 @@ function resolveSiteUrl(): string {
 export const siteUrl = new URL(resolveSiteUrl());
 
 export const site = {
-  name: "Catholicon Technology Solutions",
-  shortName: "Catholicon",
+  name: "Arqora Technology Solutions",
+  shortName: "Arqora",
   tagline: "Tech solutions for every business.",
   description:
-    "Catholicon Technology Solutions builds websites, apps, CRM and business software, and data and automation solutions for businesses worldwide.",
+    "Arqora Technology Solutions builds websites, apps, CRM and business software, and data and automation solutions for businesses worldwide.",
   location: "India · Germany",
   // Digits only, with country code, e.g. "919876543210". Empty hides WhatsApp links.
   whatsapp: "918421488114",

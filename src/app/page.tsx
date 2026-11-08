@@ -47,7 +47,7 @@ export default function Home() {
 
         <Container className="relative flex flex-1 flex-col justify-center pb-16 pt-36">
           <p className="word text-xs font-semibold uppercase tracking-[0.28em] text-mute">
-            catholicon technology solutions
+            arqora technology solutions
           </p>
           <h1 className="mt-7 max-w-5xl font-display text-[3.1rem] font-semibold leading-[0.98] tracking-[-0.045em] sm:text-7xl md:text-[6.5rem]">
             <Words text="tech solutions" start={1} />
@@ -130,7 +130,7 @@ export default function Home() {
       <section data-theme="dark" className="relative overflow-hidden bg-night py-28 text-white sm:py-36">
         <div aria-hidden="true" className="orb pointer-events-none absolute -left-40 top-10 h-[30rem] w-[30rem] rounded-full bg-[radial-gradient(circle,rgba(140,155,255,0.18),transparent_65%)]" />
         <Container className="relative">
-          <Eyebrow light>why catholicon</Eyebrow>
+          <Eyebrow light>why arqora</Eyebrow>
           <h2 data-reveal className="mt-6 max-w-3xl font-display text-4xl font-semibold leading-[1.05] tracking-[-0.035em] sm:text-6xl">
             engineering quality, <span className="text-gradient">with a partner who stays.</span>
           </h2>

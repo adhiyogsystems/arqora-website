@@ -30,14 +30,15 @@ export default function AboutPage() {
           <div>
             <Eyebrow>the name</Eyebrow>
             <p data-reveal className="mt-8 font-display text-6xl font-semibold tracking-[-0.04em] sm:text-7xl">
-              catholicon
+              arqora
             </p>
-            <p data-reveal className="mt-3 text-ink-soft">/kəˈθɒlɪkɒn/ · from Greek <em>katholikon</em>, &ldquo;universal&rdquo;</p>
+            <p data-reveal className="mt-3 text-ink-soft">ar·KOR·a · <em>arq</em>, the arch, + <em>ora</em>, the edge</p>
           </div>
           <div className="space-y-6 text-lg leading-relaxed text-ink-soft">
             <p data-reveal>
-              A catholicon is a remedy for every need. That is our promise: whatever your business needs from
-              technology, one partner who can build it, connect it and keep it running.
+              <em>Arq</em> comes from the arch, the oldest shape in architecture: built carefully, it carries
+              weight for centuries. <em>Ora</em> is the Latin word for edge or frontier. Together, Arqora means
+              building strong foundations at the edge of what technology can do for your business.
             </p>
             <p data-reveal>
               We work across full-stack web development, installable and native apps, CRM and business software,

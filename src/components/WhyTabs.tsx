@@ -31,7 +31,7 @@ export function WhyTabs() {
 
   return (
     <div className="grid gap-12 md:grid-cols-[0.8fr_1.2fr] md:gap-20">
-      <div role="tablist" aria-label="Why Catholicon" className="flex flex-row flex-wrap gap-2 md:flex-col md:gap-1">
+      <div role="tablist" aria-label="Why Arqora" className="flex flex-row flex-wrap gap-2 md:flex-col md:gap-1">
         {items.map((it, i) => {
           const on = i === active;
           return (

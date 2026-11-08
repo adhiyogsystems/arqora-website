@@ -67,7 +67,7 @@ export function Header() {
           <Link href="/" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
             <Logo size={32} />
             <span className="leading-none">
-              <span className="block font-display text-[17px] font-semibold tracking-tight">catholicon</span>
+              <span className="block font-display text-[17px] font-semibold tracking-tight">arqora</span>
               <span className={`block text-[9.5px] font-medium uppercase tracking-[0.22em] ${dark ? "text-mute" : "text-ink-soft"}`}>
                 technology solutions
               </span>

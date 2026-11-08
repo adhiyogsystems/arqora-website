@@ -1,7 +1,7 @@
 /** Short, plain answers. Review and edit these to match how you work. */
 export const faqs = [
   {
-    q: "What does Catholicon do?",
+    q: "What does Arqora do?",
     a: "We design and build websites, apps, CRM and business software, and data and automation tools. One partner for the technology your business runs on, from the first website to the systems behind it.",
   },
   {

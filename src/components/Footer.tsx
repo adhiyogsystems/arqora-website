@@ -12,7 +12,7 @@ export function Footer() {
         <div>
           <div className="flex items-center gap-2.5">
             <Logo size={30} />
-            <span className="font-display text-lg font-semibold">catholicon</span>
+            <span className="font-display text-lg font-semibold">arqora</span>
           </div>
           <p className="mt-4 max-w-xs leading-relaxed text-mute">{site.tagline}</p>
           <div className="mt-8 grid gap-5 text-sm sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
@@ -61,8 +61,8 @@ export function Footer() {
         </div>
       </div>
 
-      <div aria-hidden="true" className="pointer-events-none select-none px-3 text-center font-display text-[22vw] font-semibold leading-[0.8] tracking-[-0.06em] text-white/[0.04] md:text-[17vw]">
-        catholicon
+      <div aria-hidden="true" className="pointer-events-none select-none px-3 text-center font-display text-[30vw] font-semibold leading-[0.8] tracking-[-0.06em] text-white/[0.04] md:text-[26vw]">
+        arqora
       </div>
 
       <div className="border-t border-night-line">

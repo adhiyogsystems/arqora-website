@@ -7,7 +7,7 @@ import { offices, site, telHref, whatsappLink } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Tell us about your project and get a free quote from Catholicon Technology Solutions.",
+  description: "Tell us about your project and get a free quote from Arqora Technology Solutions.",
   alternates: { canonical: "/contact" },
 };
 
