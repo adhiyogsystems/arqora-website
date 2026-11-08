@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { ContactForm } from "@/components/ContactForm";
 import { Container, PageHero } from "@/components/ui";
 import { liveServices } from "@/data/services";
-import { site, whatsappLink } from "@/lib/site";
+import { offices, site, telHref, whatsappLink } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -53,9 +53,27 @@ export default async function ContactPage({ searchParams }: Props) {
               </a>
             ))}
             <div className="rounded-2xl bg-night p-6 text-white" data-theme="dark">
-              <span className="block text-xs font-semibold uppercase tracking-[0.2em] text-mute">based in</span>
-              <span className="mt-1 block font-display text-lg font-semibold">India</span>
-              <p className="mt-2 text-sm text-mute">Working with clients worldwide, online or in person.</p>
+              <span className="block text-xs font-semibold uppercase tracking-[0.2em] text-mute">our offices</span>
+              <div className="mt-4 grid gap-5">
+                {offices.map((o) => (
+                  <div key={o.country} className="border-t border-night-line pt-4 first:border-0 first:pt-0">
+                    <p className="font-display text-lg font-semibold">
+                      {o.country} <span className="text-sm font-normal text-mute">· {o.label}</span>
+                    </p>
+                    {o.lines.length > 0 && (
+                      <address className="mt-2 text-sm not-italic leading-relaxed text-mute">
+                        {o.lines.map((l) => (
+                          <span key={l} className="block">{l}</span>
+                        ))}
+                      </address>
+                    )}
+                    {o.phone && (
+                      <a href={telHref(o.phone)} className="mt-2 inline-block text-sm text-white hover:text-saffron">{o.phone}</a>
+                    )}
+                  </div>
+                ))}
+              </div>
+              <p className="mt-5 border-t border-night-line pt-4 text-sm text-mute">Working with clients worldwide, online or in person.</p>
             </div>
           </aside>
         </Container>

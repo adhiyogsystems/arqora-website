@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { Logo } from "@/components/Logo";
 import { liveServices } from "@/data/services";
-import { site, whatsappLink } from "@/lib/site";
+import { offices, site, telHref, whatsappLink } from "@/lib/site";
 
 export function Footer() {
   const wa = whatsappLink(`Hello ${site.shortName}, I would like to discuss a project.`);
@@ -15,7 +15,25 @@ export function Footer() {
             <span className="font-display text-lg font-semibold">catholicon</span>
           </div>
           <p className="mt-4 max-w-xs leading-relaxed text-mute">{site.tagline}</p>
-          <p className="mt-6 text-sm text-mute">{site.location}</p>
+          <div className="mt-8 grid gap-5 text-sm sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
+            {offices.map((o) => (
+              <div key={o.country}>
+                <p className="font-semibold text-white">
+                  {o.country} <span className="font-normal text-mute">· {o.label}</span>
+                </p>
+                {o.lines.length > 0 && (
+                  <address className="mt-1.5 not-italic leading-relaxed text-mute">
+                    {o.lines.slice(1).map((l) => (
+                      <span key={l} className="block">{l}</span>
+                    ))}
+                  </address>
+                )}
+                {o.phone && o.phone !== site.phone && (
+                  <a href={telHref(o.phone)} className="mt-1.5 inline-block text-white/85 hover:text-saffron">{o.phone}</a>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
         <div>
           <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-mute">services</h3>

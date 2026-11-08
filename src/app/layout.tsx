@@ -3,7 +3,7 @@ import { Inter, Sora } from "next/font/google";
 
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { site, siteUrl } from "@/lib/site";
+import { offices, site, siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
@@ -29,7 +29,18 @@ const orgJsonLd = {
   description: site.description,
   email: site.email,
   telephone: site.phone,
-  address: { "@type": "PostalAddress", addressCountry: "IN" },
+  address: [
+    { "@type": "PostalAddress", addressCountry: "IN" },
+    ...offices
+      .filter((o) => o.postal)
+      .map((o) => ({
+        "@type": "PostalAddress",
+        streetAddress: o.postal!.street,
+        postalCode: o.postal!.postalCode,
+        addressLocality: o.postal!.city,
+        addressCountry: o.postal!.countryCode,
+      })),
+  ],
 };
 
 /**
