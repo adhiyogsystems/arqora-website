@@ -21,8 +21,8 @@ export default function WorkPage() {
       />
       <section data-theme="light" className="bg-cream py-24 sm:py-32">
         <Container className="grid gap-28">
-          {projects.map((p) => (
-            <ProjectShowcase key={p.slug} project={p} headingLevel="h2" />
+          {projects.map((p, i) => (
+            <ProjectShowcase key={p.slug} project={p} headingLevel="h2" reverse={i % 2 === 1} />
           ))}
           <p data-reveal className="text-center font-display text-xl text-ink-soft">more projects coming soon.</p>
         </Container>

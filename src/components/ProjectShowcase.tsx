@@ -4,11 +4,19 @@ import { ButtonLink, Eyebrow } from "@/components/ui";
 import type { Project } from "@/data/projects";
 
 /** A project shown inside a browser-window frame, with what we built beside it. */
-export function ProjectShowcase({ project, headingLevel = "h3" }: { project: Project; headingLevel?: "h2" | "h3" }) {
+export function ProjectShowcase({
+  project,
+  headingLevel = "h3",
+  reverse = false,
+}: {
+  project: Project;
+  headingLevel?: "h2" | "h3";
+  reverse?: boolean;
+}) {
   const H = headingLevel;
   return (
-    <article className="grid items-center gap-10 lg:grid-cols-[1.25fr_1fr] lg:gap-16">
-      <div data-reveal className="overflow-hidden rounded-2xl border border-ink/10 bg-white shadow-[0_40px_80px_-30px_rgba(14,18,34,0.35)]">
+    <article className={`grid items-center gap-10 lg:gap-16 ${reverse ? "lg:grid-cols-[1fr_1.25fr]" : "lg:grid-cols-[1.25fr_1fr]"}`}>
+      <div data-reveal className={`${reverse ? "lg:order-2" : ""} overflow-hidden rounded-2xl border border-ink/10 bg-white shadow-[0_40px_80px_-30px_rgba(14,18,34,0.35)]`}>
         <div className="flex items-center gap-2 border-b border-ink/10 bg-mist px-4 py-3">
           <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
           <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
