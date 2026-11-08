@@ -10,9 +10,9 @@ const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: siteUrl,
-  title: { default: `${site.name}: Websites, Apps & Business Software`, template: `%s | ${site.name}` },
+  title: { default: `${site.name} | ${site.tagline.replace(/\.$/, "")}`, template: `%s | ${site.shortName}` },
   description: site.description,
-  openGraph: { type: "website", siteName: site.name, locale: "en_IN" },
+  openGraph: { type: "website", siteName: site.name },
   alternates: { canonical: "/" },
 };
 
@@ -20,13 +20,14 @@ export const viewport: Viewport = { themeColor: "#1b2563" };
 
 const orgJsonLd = {
   "@context": "https://schema.org",
-  "@type": "ProfessionalService",
+  "@type": "Organization",
   name: site.name,
+  alternateName: site.shortName,
+  slogan: site.tagline,
   url: siteUrl.toString(),
   description: site.description,
   email: site.email,
-  areaServed: "IN",
-  address: { "@type": "PostalAddress", addressRegion: "Maharashtra", addressCountry: "IN" },
+  address: { "@type": "PostalAddress", addressCountry: "IN" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

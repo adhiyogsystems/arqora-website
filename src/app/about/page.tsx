@@ -1,17 +1,18 @@
 import type { Metadata } from "next";
 
 import { Container, CtaBand, Eyebrow, PageHero } from "@/components/ui";
+import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "Adhiyog Systems is a small software studio in Maharashtra building websites, apps and business software.",
+  description: `${site.name} is a technology company building websites, apps, business software and data solutions.`,
   alternates: { canonical: "/about" },
 };
 
 const values = [
-  { title: "Plain words", text: "We explain things simply and put prices in writing before we start." },
-  { title: "Careful work", text: "Fast, secure and tested. We build things we would be happy to use ourselves." },
-  { title: "Long-term", text: "Most clients stay with us for maintenance and new features. That is the goal." },
+  { title: "Clarity", text: "Plain language, written plans and fixed prices agreed before work begins." },
+  { title: "Craft", text: "Fast, secure, tested software we would be proud to use ourselves." },
+  { title: "Partnership", text: "We stay after launch with support, maintenance and new features as you grow." },
 ];
 
 export default function AboutPage() {
@@ -19,26 +20,26 @@ export default function AboutPage() {
     <>
       <PageHero
         eyebrow="About us"
-        title="A small studio that builds things properly."
-        intro="Adhiyog Systems is a full-stack software studio. We design and build websites, apps, business software and data tools, and we stay with our clients after launch."
+        title="One technology partner for every business need."
+        intro={`${site.name} is a full-stack technology company. We design and build websites, apps, business software and data solutions, and we stay with our clients long after launch.`}
       />
       <section className="py-16">
         <Container className="grid gap-12 md:grid-cols-2">
           <div>
             <Eyebrow>The name</Eyebrow>
-            <h2 className="mt-3 text-2xl font-semibold tracking-tight">Adhiyog</h2>
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight">Catholicon</h2>
             <p className="mt-4 leading-relaxed text-ink-soft">
-              The name brings together <em>Adhi</em>, the first and foundational, and <em>Yog</em>, union. It is what
-              we try to do for every client: build a strong foundation and bring the pieces of a business together in
-              one working system.
+              From the Greek <em>katholikon</em>, meaning &ldquo;universal.&rdquo; A catholicon is a remedy for
+              every need. That is our promise: whatever your business needs from technology, one partner who can
+              build it, connect it and keep it running.
             </p>
           </div>
           <div>
             <Eyebrow>What we work on</Eyebrow>
             <p className="mt-4 leading-relaxed text-ink-soft">
-              Full-stack web development, installable apps, CRM and business software, and data work, from cleaning
-              datasets to live dashboards. For larger government and institutional projects, we work with trusted
-              partners so every part is handled by someone experienced.
+              Full-stack web development, installable and native apps, CRM and business software, and data work,
+              from cleaning datasets to live dashboards and automation. For large government and enterprise
+              projects, we bring in trusted specialist partners so every part is handled by experienced hands.
             </p>
           </div>
         </Container>

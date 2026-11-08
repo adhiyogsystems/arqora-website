@@ -21,7 +21,10 @@ export function Header() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <Link href="/" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
           <Logo />
-          <span className="text-[17px] font-semibold tracking-tight">Adhiyog Systems</span>
+          <span className="leading-none">
+            <span className="block text-[17px] font-semibold tracking-tight">Catholicon</span>
+            <span className="block text-[10px] font-medium uppercase tracking-[0.18em] text-ink-soft">Technology Solutions</span>
+          </span>
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">

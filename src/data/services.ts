@@ -14,13 +14,13 @@ export const services: Service[] = [
   {
     slug: "websites",
     title: "Websites & SEO",
-    short: "Fast, bilingual business websites that show up on Google.",
+    short: "Fast, modern business websites that show up on Google.",
     intro:
       "A website that loads fast on any phone, explains what you do in plain words, and helps customers find you on Google Search and Maps.",
     icon: "globe",
     includes: [
       "Business websites for shops, clinics, schools and hotels",
-      "Marathi, Hindi and English versions",
+      "Multilingual websites in any language",
       "Google Search and Google Maps setup",
       "Landing pages for ads, events and launches",
       "Online catalogs with UPI or Razorpay payments",

@@ -7,7 +7,7 @@ import { site, whatsappLink } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Tell us about your project and get a free quote from Adhiyog Systems.",
+  description: "Tell us about your project and get a free quote from Catholicon Technology Solutions.",
   alternates: { canonical: "/contact" },
 };
 
@@ -17,7 +17,7 @@ export default async function ContactPage({ searchParams }: Props) {
   const { service } = await searchParams;
   const options = liveServices().map((s) => ({ slug: s.slug, title: s.title }));
   const preset = options.some((o) => o.slug === service) ? service : undefined;
-  const wa = whatsappLink("Hello Adhiyog Systems, I would like to discuss a project.");
+  const wa = whatsappLink(`Hello ${site.shortName}, I would like to discuss a project.`);
 
   return (
     <>
@@ -45,7 +45,7 @@ export default async function ContactPage({ searchParams }: Props) {
             <div className="rounded-2xl bg-mist p-6">
               <h2 className="font-semibold">Based in</h2>
               <p className="mt-1 text-ink-soft">{site.location}</p>
-              <p className="mt-3 text-sm text-ink-soft">We work with clients anywhere in India, online or in person.</p>
+              <p className="mt-3 text-sm text-ink-soft">We work with clients worldwide, online or in person.</p>
             </div>
           </aside>
         </Container>

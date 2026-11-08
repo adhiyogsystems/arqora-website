@@ -5,7 +5,7 @@ import { projects } from "@/data/projects";
 
 export const metadata: Metadata = {
   title: "Our work",
-  description: "Websites and apps built by Adhiyog Systems.",
+  description: "Websites and apps built by Catholicon Technology Solutions.",
   alternates: { canonical: "/work" },
 };
 

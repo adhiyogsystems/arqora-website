@@ -13,7 +13,7 @@ const steps = [
 ];
 
 const reasons = [
-  { title: "Local and reachable", text: "You talk directly to the people building your project, in Marathi, Hindi or English." },
+  { title: "Direct access", text: "You work directly with the engineers building your project. No middle layers, no hand-offs." },
   { title: "Built for phones", text: "Everything we make is fast on everyday phones and patchy networks." },
   { title: "Start small, grow later", text: "Begin with what you need now. Add features when your business is ready." },
   { title: "You own it", text: "Your domain, your code, your data. Always handed over to you." },
@@ -28,13 +28,13 @@ export default function Home() {
       <section className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60rem_30rem_at_85%_-10%,#e8e9f8,transparent),radial-gradient(40rem_20rem_at_0%_110%,#fdf1e4,transparent)]" />
         <Container className="pb-20 pt-20 sm:pb-28 sm:pt-28">
-          <Eyebrow>Software studio · Maharashtra</Eyebrow>
+          <Eyebrow>Catholicon Technology Solutions</Eyebrow>
           <h1 className="mt-4 max-w-3xl text-[2.6rem] font-semibold leading-[1.08] tracking-tight sm:text-6xl">
-            Websites, apps and software that <span className="text-brand">work for your business.</span>
+            Tech solutions for <span className="text-brand">every business.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft">
-            Adhiyog Systems builds fast websites, installable apps, CRM and business software, and data dashboards
-            for businesses and institutions. Simple to use, made to grow.
+            We design and build websites, apps, CRM and business software, and data and automation solutions for
+            businesses and institutions worldwide. One partner for everything your business runs on.
           </p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <ButtonLink href="/contact">Get a free quote</ButtonLink>
@@ -96,8 +96,8 @@ export default function Home() {
       {/* Why us */}
       <section className="border-y border-line bg-mist py-20">
         <Container>
-          <Eyebrow>Why Adhiyog</Eyebrow>
-          <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">Small team, careful work, direct contact.</h2>
+          <Eyebrow>Why Catholicon</Eyebrow>
+          <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">Engineering quality, with a partner who stays.</h2>
           <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {reasons.map((r) => (
               <div key={r.title}>
