@@ -34,6 +34,10 @@ export default async function ContactPage({ searchParams }: Props) {
               <h2 className="font-semibold">Email</h2>
               <a href={`mailto:${site.email}`} className="mt-1 block text-brand hover:underline">{site.email}</a>
             </div>
+            <div className="rounded-2xl border border-line p-6">
+              <h2 className="font-semibold">Phone</h2>
+              <a href={`tel:${site.phone.replace(/\s/g, "")}`} className="mt-1 block text-brand hover:underline">{site.phone}</a>
+            </div>
             {wa && (
               <div className="rounded-2xl border border-line p-6">
                 <h2 className="font-semibold">WhatsApp</h2>

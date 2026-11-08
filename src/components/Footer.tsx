@@ -35,6 +35,7 @@ export function Footer() {
             <li><Link href="/about" className="hover:text-brand">About</Link></li>
             <li><Link href="/contact" className="hover:text-brand">Contact</Link></li>
             <li><a href={`mailto:${site.email}`} className="hover:text-brand">{site.email}</a></li>
+            <li><a href={`tel:${site.phone.replace(/\s/g, "")}`} className="hover:text-brand">{site.phone}</a></li>
           </ul>
         </div>
       </div>

@@ -27,6 +27,7 @@ const orgJsonLd = {
   url: siteUrl.toString(),
   description: site.description,
   email: site.email,
+  telephone: site.phone,
   address: { "@type": "PostalAddress", addressCountry: "IN" },
 };
 
