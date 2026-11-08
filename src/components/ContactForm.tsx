@@ -7,7 +7,7 @@ import { site, whatsappLink } from "@/lib/site";
 type Option = { slug: string; title: string };
 
 const field =
-  "mt-1.5 w-full rounded-xl border border-line bg-white px-4 py-3 text-[15px] outline-none transition-colors focus:border-brand focus:ring-2 focus:ring-brand/15";
+  "mt-2 w-full rounded-xl border border-ink/12 bg-white px-4 py-3.5 text-[15px] outline-none transition-colors focus:border-night focus:ring-4 focus:ring-iris/20";
 
 /**
  * No backend yet: the form writes the enquiry into a WhatsApp message (when a
@@ -39,7 +39,7 @@ export function ContactForm({ services, defaultService }: { services: Option[]; 
   }
 
   return (
-    <form onSubmit={onSubmit} className="grid gap-5 rounded-2xl border border-line p-6 sm:p-8">
+    <form onSubmit={onSubmit} className="grid gap-5 rounded-3xl border border-ink/10 bg-white p-6 shadow-[0_30px_60px_-30px_rgba(14,18,34,0.25)] sm:p-9">
       <div className="grid gap-5 sm:grid-cols-2">
         <label className="text-sm font-medium">
           Your name
@@ -67,7 +67,7 @@ export function ContactForm({ services, defaultService }: { services: Option[]; 
         Tell us a little more
         <textarea name="message" required rows={5} className={field} placeholder="What does your business do, and what should the website or software help with?" />
       </label>
-      <button type="submit" className="rounded-full bg-brand px-6 py-3.5 font-medium text-white transition-colors hover:bg-brand-deep">
+      <button type="submit" className="rounded-xl bg-night px-6 py-4 font-semibold text-white transition-colors hover:bg-brand">
         Send enquiry
       </button>
       {sent && (

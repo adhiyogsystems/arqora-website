@@ -19,37 +19,43 @@ export default async function ContactPage({ searchParams }: Props) {
   const preset = options.some((o) => o.slug === service) ? service : undefined;
   const wa = whatsappLink(`Hello ${site.shortName}, I would like to discuss a project.`);
 
+  const channels = [
+    { label: "email", value: site.email, href: `mailto:${site.email}` },
+    { label: "phone", value: site.phone, href: `tel:${site.phone.replace(/\s/g, "")}` },
+    ...(wa ? [{ label: "whatsapp", value: "chat with us", href: wa }] : []),
+  ];
+
   return (
     <>
       <PageHero
-        eyebrow="Contact"
-        title="Tell us about your project."
+        eyebrow="contact"
+        title="tell us about"
+        accent="your project."
         intro="A few lines are enough. We reply with questions, a plan and a clear price. The first conversation is always free."
       />
-      <section className="py-16">
+      <section data-theme="light" className="bg-cream py-20 sm:py-28">
         <Container className="grid gap-12 md:grid-cols-[1.5fr_1fr]">
           <ContactForm services={options} defaultService={preset} />
-          <aside className="space-y-6">
-            <div className="rounded-2xl border border-line p-6">
-              <h2 className="font-semibold">Email</h2>
-              <a href={`mailto:${site.email}`} className="mt-1 block text-brand hover:underline">{site.email}</a>
-            </div>
-            <div className="rounded-2xl border border-line p-6">
-              <h2 className="font-semibold">Phone</h2>
-              <a href={`tel:${site.phone.replace(/\s/g, "")}`} className="mt-1 block text-brand hover:underline">{site.phone}</a>
-            </div>
-            {wa && (
-              <div className="rounded-2xl border border-line p-6">
-                <h2 className="font-semibold">WhatsApp</h2>
-                <a href={wa} target="_blank" rel="noopener noreferrer" className="mt-1 block text-brand hover:underline">
-                  Chat with us
-                </a>
-              </div>
-            )}
-            <div className="rounded-2xl bg-mist p-6">
-              <h2 className="font-semibold">Based in</h2>
-              <p className="mt-1 text-ink-soft">{site.location}</p>
-              <p className="mt-3 text-sm text-ink-soft">We work with clients worldwide, online or in person.</p>
+          <aside className="space-y-3">
+            {channels.map((c) => (
+              <a
+                key={c.label}
+                href={c.href}
+                target={c.href.startsWith("http") ? "_blank" : undefined}
+                rel="noopener noreferrer"
+                className="group flex items-center justify-between rounded-2xl border border-ink/10 bg-white p-6 transition-colors hover:border-night"
+              >
+                <span>
+                  <span className="block text-xs font-semibold uppercase tracking-[0.2em] text-ink-soft">{c.label}</span>
+                  <span className="mt-1 block font-display text-lg font-semibold">{c.value}</span>
+                </span>
+                <span className="transition-transform group-hover:translate-x-1">→</span>
+              </a>
+            ))}
+            <div className="rounded-2xl bg-night p-6 text-white" data-theme="dark">
+              <span className="block text-xs font-semibold uppercase tracking-[0.2em] text-mute">based in</span>
+              <span className="mt-1 block font-display text-lg font-semibold">India</span>
+              <p className="mt-2 text-sm text-mute">Working with clients worldwide, online or in person.</p>
             </div>
           </aside>
         </Container>

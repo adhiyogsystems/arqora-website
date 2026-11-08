@@ -1,128 +1,200 @@
-import Link from "next/link";
-
-import { ServiceIcon } from "@/components/ServiceIcon";
-import { ButtonLink, Container, CtaBand, Eyebrow } from "@/components/ui";
+import { Faq } from "@/components/Faq";
+import { ProjectShowcase } from "@/components/ProjectShowcase";
+import { ServiceRows } from "@/components/ServiceRows";
+import { ButtonLink, Container, CtaBand, Eyebrow, Words } from "@/components/ui";
+import { WhyTabs } from "@/components/WhyTabs";
+import { faqs } from "@/data/faq";
 import { projects } from "@/data/projects";
-import { liveServices } from "@/data/services";
+
+const capabilities = [
+  "websites",
+  "web apps",
+  "android & ios",
+  "crm",
+  "billing & gst",
+  "dashboards",
+  "automation",
+  "ai chatbots",
+  "e-governance",
+  "seo",
+];
 
 const steps = [
-  { title: "Talk", text: "A short call or WhatsApp chat to understand your business and what you need." },
-  { title: "Plan & price", text: "A clear written plan, timeline and fixed price. No surprises later." },
-  { title: "Build", text: "We build in small steps and show you progress every week." },
-  { title: "Launch & support", text: "We go live, train your team, and stay on for maintenance." },
+  { title: "talk", text: "A short call or chat to understand your business and what you need." },
+  { title: "plan & price", text: "A written plan, timeline and fixed price. No surprises later." },
+  { title: "build", text: "We build in small steps and show you progress every week." },
+  { title: "launch & grow", text: "We go live, train your team, and stay on for support." },
 ];
 
-const reasons = [
-  { title: "Direct access", text: "You work directly with the engineers building your project. No middle layers, no hand-offs." },
-  { title: "Built for phones", text: "Everything we make is fast on everyday phones and patchy networks." },
-  { title: "Start small, grow later", text: "Begin with what you need now. Add features when your business is ready." },
-  { title: "You own it", text: "Your domain, your code, your data. Always handed over to you." },
-];
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+};
 
 export default function Home() {
-  const featured = projects[0];
-
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+
       {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60rem_30rem_at_85%_-10%,#e8e9f8,transparent),radial-gradient(40rem_20rem_at_0%_110%,#fdf1e4,transparent)]" />
-        <Container className="pb-20 pt-20 sm:pb-28 sm:pt-28">
-          <Eyebrow>Catholicon Technology Solutions</Eyebrow>
-          <h1 className="mt-4 max-w-3xl text-[2.6rem] font-semibold leading-[1.08] tracking-tight sm:text-6xl">
-            Tech solutions for <span className="text-brand">every business.</span>
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft">
-            We design and build websites, apps, CRM and business software, and data and automation solutions for
-            businesses and institutions worldwide. One partner for everything your business runs on.
+      <section data-theme="dark" className="relative flex min-h-[100svh] flex-col overflow-hidden bg-night text-white">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+          <div className="orb absolute -right-32 -top-32 h-[42rem] w-[42rem] rounded-full bg-[radial-gradient(circle,rgba(140,155,255,0.32),transparent_62%)]" />
+          <div className="orb absolute -bottom-48 -left-40 h-[36rem] w-[36rem] rounded-full bg-[radial-gradient(circle,rgba(240,160,75,0.2),transparent_62%)] [animation-delay:-9s]" />
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:72px_72px] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
+        </div>
+
+        <Container className="relative flex flex-1 flex-col justify-center pb-16 pt-36">
+          <p className="word text-xs font-semibold uppercase tracking-[0.28em] text-mute">
+            catholicon technology solutions
           </p>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <ButtonLink href="/contact">Get a free quote</ButtonLink>
-            <ButtonLink href="/work" variant="ghost">See our work</ButtonLink>
+          <h1 className="mt-7 max-w-5xl font-display text-[3.1rem] font-semibold leading-[0.98] tracking-[-0.045em] sm:text-7xl md:text-[6.5rem]">
+            <Words text="tech solutions" start={1} />
+            <br className="hidden sm:block" />
+            <Words text="for" start={3} />
+            <Words text="every business." start={4} className="text-gradient" />
+          </h1>
+          <p className="word mt-8 max-w-xl text-lg leading-relaxed text-mute sm:text-xl" style={{ "--i": 8 } as React.CSSProperties}>
+            We design and build websites, apps, CRM and business software, and data solutions for businesses worldwide.
+            One partner for everything your business runs on.
+          </p>
+          <div className="word mt-10 flex flex-col gap-3 sm:flex-row" style={{ "--i": 10 } as React.CSSProperties}>
+            <ButtonLink href="/contact" variant="light">start a project</ButtonLink>
+            <ButtonLink href="/work" variant="ghost-light">see our work</ButtonLink>
+          </div>
+        </Container>
+
+        <div className="relative border-t border-white/10 py-5">
+          <div className="overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_10%,black_90%,transparent)]">
+            <div className="marquee">
+              {[0, 1].map((copy) => (
+                <ul key={copy} aria-hidden={copy === 1} className="flex shrink-0 items-center">
+                  {capabilities.map((c) => (
+                    <li key={c} className="flex items-center gap-8 pr-8 font-display text-lg text-white/55 sm:text-xl">
+                      {c}
+                      <span className="h-1.5 w-1.5 rounded-full bg-saffron/80" />
+                    </li>
+                  ))}
+                </ul>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Statement */}
+      <section data-theme="light" className="bg-cream py-28 sm:py-36">
+        <Container>
+          <Eyebrow>who we are</Eyebrow>
+          <p data-reveal className="mt-8 max-w-5xl font-display text-3xl font-medium leading-[1.2] tracking-[-0.025em] sm:text-5xl">
+            we design, build and run the software your business depends on,{" "}
+            <span className="text-ink-soft">from the first website to the systems behind it.</span>
+          </p>
+          <div data-reveal className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-ink/10 bg-ink/10 sm:grid-cols-3">
+            {[
+              ["design", "Interfaces that are clear, fast and easy to use on any phone."],
+              ["engineering", "Full-stack development, from databases to polished front ends."],
+              ["data", "Clean data, live dashboards and automation that saves hours."],
+            ].map(([t, d]) => (
+              <div key={t} className="bg-cream p-7">
+                <h3 className="font-display text-xl font-semibold">{t}</h3>
+                <p className="mt-2 text-ink-soft">{d}</p>
+              </div>
+            ))}
           </div>
         </Container>
       </section>
 
       {/* Services */}
-      <section className="border-t border-line bg-mist py-20">
+      <section data-theme="light" className="bg-white py-28 sm:py-36">
         <Container>
-          <Eyebrow>What we do</Eyebrow>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">Services</h2>
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {liveServices().map((s) => (
-              <Link
-                key={s.slug}
-                href={`/services/${s.slug}`}
-                className="group rounded-2xl border border-line bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-[0_10px_30px_-12px_rgba(27,37,99,0.25)]"
-              >
-                <ServiceIcon name={s.icon} />
-                <h3 className="mt-5 text-lg font-semibold">{s.title}</h3>
-                <p className="mt-2 text-[15px] leading-relaxed text-ink-soft">{s.short}</p>
-                <span className="mt-4 inline-block text-sm font-medium text-brand">
-                  Learn more <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
-                </span>
-              </Link>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      {/* Featured work */}
-      <section className="py-20">
-        <Container>
-          <div className="grid items-center gap-10 rounded-3xl border border-line p-6 sm:p-10 lg:grid-cols-2">
+          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
             <div>
-              <Eyebrow>Featured work</Eyebrow>
-              <h2 className="mt-3 text-3xl font-semibold tracking-tight">{featured.name}</h2>
-              <p className="mt-1 text-sm font-medium text-ink-soft">{featured.category}</p>
-              <p className="mt-4 leading-relaxed text-ink-soft">{featured.summary}</p>
-              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <ButtonLink href="/work">Read the case study</ButtonLink>
-                {featured.url && <ButtonLink href={featured.url} variant="ghost">Visit site ↗</ButtonLink>}
-              </div>
+              <Eyebrow>what we do</Eyebrow>
+              <h2 data-reveal className="mt-6 font-display text-5xl font-semibold tracking-[-0.04em] sm:text-6xl">
+                services
+              </h2>
             </div>
-            <ul className="grid gap-3">
-              {featured.built.map((b) => (
-                <li key={b} className="flex items-start gap-3 rounded-xl bg-mist px-4 py-3.5 text-[15px]">
-                  <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-saffron" />
-                  {b}
-                </li>
-              ))}
-            </ul>
+            <p data-reveal className="max-w-sm text-ink-soft">
+              Pick one or combine them. Most clients start with one clear goal and grow from there.
+            </p>
+          </div>
+          <div className="mt-14">
+            <ServiceRows />
           </div>
         </Container>
       </section>
 
       {/* Why us */}
-      <section className="border-y border-line bg-mist py-20">
+      <section data-theme="dark" className="relative overflow-hidden bg-night py-28 text-white sm:py-36">
+        <div aria-hidden="true" className="orb pointer-events-none absolute -left-40 top-10 h-[30rem] w-[30rem] rounded-full bg-[radial-gradient(circle,rgba(140,155,255,0.18),transparent_65%)]" />
+        <Container className="relative">
+          <Eyebrow light>why catholicon</Eyebrow>
+          <h2 data-reveal className="mt-6 max-w-3xl font-display text-4xl font-semibold leading-[1.05] tracking-[-0.035em] sm:text-6xl">
+            engineering quality, <span className="text-gradient">with a partner who stays.</span>
+          </h2>
+          <div className="mt-16">
+            <WhyTabs />
+          </div>
+        </Container>
+      </section>
+
+      {/* Work */}
+      <section data-theme="light" className="bg-cream py-28 sm:py-36">
         <Container>
-          <Eyebrow>Why Catholicon</Eyebrow>
-          <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">Engineering quality, with a partner who stays.</h2>
-          <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {reasons.map((r) => (
-              <div key={r.title}>
-                <h3 className="font-semibold">{r.title}</h3>
-                <p className="mt-2 text-[15px] leading-relaxed text-ink-soft">{r.text}</p>
-              </div>
-            ))}
+          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+            <div>
+              <Eyebrow>selected work</Eyebrow>
+              <h2 data-reveal className="mt-6 font-display text-5xl font-semibold tracking-[-0.04em] sm:text-6xl">
+                live and in use.
+              </h2>
+            </div>
+            <div data-reveal>
+              <ButtonLink href="/work" variant="ghost">all projects</ButtonLink>
+            </div>
+          </div>
+          <div className="mt-16">
+            <ProjectShowcase project={projects[0]} />
           </div>
         </Container>
       </section>
 
       {/* Process */}
-      <section className="py-20">
+      <section data-theme="light" className="bg-white py-28 sm:py-36">
         <Container>
-          <Eyebrow>How we work</Eyebrow>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">From first call to launch</h2>
-          <ol className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <Eyebrow>how we work</Eyebrow>
+          <h2 data-reveal className="mt-6 max-w-3xl font-display text-4xl font-semibold leading-[1.05] tracking-[-0.035em] sm:text-6xl">
+            from first call to launch.
+          </h2>
+          <ol className="mt-16 grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
             {steps.map((s, i) => (
-              <li key={s.title} className="rounded-2xl border border-line p-6">
-                <span className="text-sm font-semibold text-saffron">0{i + 1}</span>
-                <h3 className="mt-2 text-lg font-semibold">{s.title}</h3>
-                <p className="mt-2 text-[15px] leading-relaxed text-ink-soft">{s.text}</p>
+              <li key={s.title} data-reveal style={{ "--d": `${i * 90}ms` } as React.CSSProperties} className="relative">
+                <div className="flex items-center gap-4">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-night font-display text-sm font-semibold text-white">
+                    0{i + 1}
+                  </span>
+                  <span className="hidden h-px flex-1 bg-gradient-to-r from-ink/20 to-transparent lg:block" />
+                </div>
+                <h3 className="mt-6 font-display text-2xl font-semibold">{s.title}</h3>
+                <p className="mt-2 leading-relaxed text-ink-soft">{s.text}</p>
               </li>
             ))}
           </ol>
+        </Container>
+      </section>
+
+      {/* FAQ */}
+      <section data-theme="light" className="border-t border-ink/10 bg-white py-28 sm:py-36">
+        <Container className="grid gap-12 md:grid-cols-[0.8fr_1.2fr] md:gap-20">
+          <div>
+            <Eyebrow>faq</Eyebrow>
+            <h2 data-reveal className="mt-6 font-display text-4xl font-semibold leading-[1.05] tracking-[-0.035em] sm:text-5xl">
+              questions, answered.
+            </h2>
+            <p data-reveal className="mt-5 max-w-xs text-ink-soft">Anything else? Ask us directly on WhatsApp or email.</p>
+          </div>
+          <Faq />
         </Container>
       </section>
 

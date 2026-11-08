@@ -2,6 +2,8 @@ export type Project = {
   slug: string;
   name: string;
   url?: string;
+  /** Screenshot in /public, about 1350x615. */
+  image?: string;
   category: string;
   summary: string;
   built: string[];
@@ -13,6 +15,7 @@ export const projects: Project[] = [
     slug: "akkalkot-yatra",
     name: "Akkalkot Yatra",
     url: "https://www.akkalkotyatra.com",
+    image: "/work/akkalkot-yatra.jpg",
     category: "Tourism & pilgrimage",
     summary:
       "A complete pilgrim guide for Akkalkot: rooms near the Swami Samarth temple, darshan and aarti timings, travel, places to visit and events. Available in English and Marathi.",

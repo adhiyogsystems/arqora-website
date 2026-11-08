@@ -1,16 +1,23 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-ink: #121a33;
-  --color-ink-soft: #46506b;
-  --color-line: #e3e6ee;
+  --color-night: #090c18;
+  --color-night-2: #121630;
+  --color-night-line: #23284a;
+  --color-mute: #a6adc4;
+  --color-ink: #0e1222;
+  --color-ink-soft: #545b70;
+  --color-line: #e6e1d7;
   --color-paper: #ffffff;
+  --color-cream: #f6f0e6;
   --color-mist: #f5f6fa;
-  --color-brand: #2b3a8f;
+  --color-brand: #2f3fb8;
   --color-brand-deep: #1b2563;
-  --color-saffron: #e8892b;
+  --color-iris: #8c9bff;
+  --color-saffron: #f0a04b;
   --color-saffron-soft: #fdf1e4;
   --font-sans: var(--font-inter);
+  --font-display: var(--font-sora);
 }
 
 html {
@@ -23,5 +30,95 @@ body {
 }
 
 ::selection {
-  background: var(--color-saffron-soft);
+  background: var(--color-saffron);
+  color: var(--color-night);
+}
+
+/* Signature gradient text: iris to saffron. */
+.text-gradient {
+  background: linear-gradient(95deg, var(--color-iris) 0%, #c9a7ff 45%, var(--color-saffron) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Hero words rise in one after another (pure CSS, so text is never blank). */
+.word {
+  display: inline-block;
+  animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 80ms + 100ms);
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.45em);
+    filter: blur(6px);
+  }
+}
+
+/* Scroll reveal. Only hides content when the reveal script is running. */
+html.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--d, 0ms);
+}
+html.js [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Endless capability ticker. */
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 38s linear infinite;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Slow drifting glow behind the hero. */
+.orb {
+  animation: drift 18s ease-in-out infinite alternate;
+}
+@keyframes drift {
+  to {
+    transform: translate3d(-6%, 8%, 0) scale(1.15);
+  }
+}
+
+.fade-in {
+  animation: fade 0.6s ease both;
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .word,
+  .marquee,
+  .orb,
+  .fade-in {
+    animation: none;
+  }
+  html.js [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }

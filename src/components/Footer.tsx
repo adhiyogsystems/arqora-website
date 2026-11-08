@@ -2,26 +2,27 @@ import Link from "next/link";
 
 import { Logo } from "@/components/Logo";
 import { liveServices } from "@/data/services";
-import { site } from "@/lib/site";
+import { site, whatsappLink } from "@/lib/site";
 
 export function Footer() {
+  const wa = whatsappLink(`Hello ${site.shortName}, I would like to discuss a project.`);
   return (
-    <footer className="border-t border-line bg-mist">
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr]">
+    <footer data-theme="dark" className="relative overflow-hidden bg-night text-white">
+      <div className="mx-auto grid max-w-6xl gap-12 px-5 pb-10 pt-20 sm:px-6 md:grid-cols-[1.5fr_1fr_1fr]">
         <div>
           <div className="flex items-center gap-2.5">
-            <Logo size={26} />
-            <span className="font-semibold">{site.name}</span>
+            <Logo size={30} />
+            <span className="font-display text-lg font-semibold">catholicon</span>
           </div>
-          <p className="mt-3 max-w-xs text-sm leading-relaxed text-ink-soft">{site.tagline}</p>
-          <p className="mt-3 text-sm text-ink-soft">{site.location}</p>
+          <p className="mt-4 max-w-xs leading-relaxed text-mute">{site.tagline}</p>
+          <p className="mt-6 text-sm text-mute">{site.location}</p>
         </div>
         <div>
-          <h3 className="text-sm font-semibold">Services</h3>
-          <ul className="mt-3 space-y-2 text-sm text-ink-soft">
+          <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-mute">services</h3>
+          <ul className="mt-4 space-y-2.5">
             {liveServices().map((s) => (
               <li key={s.slug}>
-                <Link href={`/services/${s.slug}`} className="hover:text-brand">
+                <Link href={`/services/${s.slug}`} className="text-white/85 transition-colors hover:text-saffron">
                   {s.title}
                 </Link>
               </li>
@@ -29,18 +30,28 @@ export function Footer() {
           </ul>
         </div>
         <div>
-          <h3 className="text-sm font-semibold">Company</h3>
-          <ul className="mt-3 space-y-2 text-sm text-ink-soft">
-            <li><Link href="/work" className="hover:text-brand">Our work</Link></li>
-            <li><Link href="/about" className="hover:text-brand">About</Link></li>
-            <li><Link href="/contact" className="hover:text-brand">Contact</Link></li>
-            <li><a href={`mailto:${site.email}`} className="hover:text-brand">{site.email}</a></li>
-            <li><a href={`tel:${site.phone.replace(/\s/g, "")}`} className="hover:text-brand">{site.phone}</a></li>
+          <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-mute">connect</h3>
+          <ul className="mt-4 space-y-2.5">
+            <li><a href={`mailto:${site.email}`} className="text-white/85 hover:text-saffron">{site.email}</a></li>
+            <li><a href={`tel:${site.phone.replace(/\s/g, "")}`} className="text-white/85 hover:text-saffron">{site.phone}</a></li>
+            {wa && (
+              <li><a href={wa} target="_blank" rel="noopener noreferrer" className="text-white/85 hover:text-saffron">WhatsApp</a></li>
+            )}
+            <li><Link href="/work" className="text-white/85 hover:text-saffron">Our work</Link></li>
+            <li><Link href="/about" className="text-white/85 hover:text-saffron">About</Link></li>
           </ul>
         </div>
       </div>
-      <div className="border-t border-line py-5 text-center text-xs text-ink-soft">
-        © {new Date().getFullYear()} {site.name}. All rights reserved.
+
+      <div aria-hidden="true" className="pointer-events-none select-none px-3 text-center font-display text-[22vw] font-semibold leading-[0.8] tracking-[-0.06em] text-white/[0.04] md:text-[17vw]">
+        catholicon
+      </div>
+
+      <div className="border-t border-night-line">
+        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-5 py-6 text-sm text-mute sm:flex-row sm:justify-between sm:px-6">
+          <span>© {new Date().getFullYear()} {site.name}. All rights reserved.</span>
+          <span>{site.tagline}</span>
+        </div>
       </div>
     </footer>
   );
