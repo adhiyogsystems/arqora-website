@@ -41,6 +41,12 @@ const orgJsonLd = {
         addressCountry: o.postal!.countryCode,
       })),
   ],
+  contactPoint: [
+    { "@type": "ContactPoint", contactType: "customer service", email: site.email, telephone: site.phone, areaServed: "IN" },
+    ...offices
+      .filter((o) => o.email)
+      .map((o) => ({ "@type": "ContactPoint", contactType: "customer service", email: o.email, areaServed: o.postal?.countryCode })),
+  ],
 };
 
 /**

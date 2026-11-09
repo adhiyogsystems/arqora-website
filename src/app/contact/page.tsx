@@ -68,7 +68,10 @@ export default async function ContactPage({ searchParams }: Props) {
                       </address>
                     )}
                     {o.phone && (
-                      <a href={telHref(o.phone)} className="mt-2 inline-block text-sm text-white hover:text-saffron">{o.phone}</a>
+                      <a href={telHref(o.phone)} className="mt-2 block text-sm text-white hover:text-saffron">{o.phone}</a>
+                    )}
+                    {o.email && (
+                      <a href={`mailto:${o.email}`} className="mt-2 block text-sm text-white hover:text-saffron">{o.email}</a>
                     )}
                   </div>
                 ))}

@@ -29,7 +29,10 @@ export function Footer() {
                   </address>
                 )}
                 {o.phone && o.phone !== site.phone && (
-                  <a href={telHref(o.phone)} className="mt-1.5 inline-block text-white/85 hover:text-saffron">{o.phone}</a>
+                  <a href={telHref(o.phone)} className="mt-1.5 block text-white/85 hover:text-saffron">{o.phone}</a>
+                )}
+                {o.email && (
+                  <a href={`mailto:${o.email}`} className="mt-1.5 block text-white/85 hover:text-saffron">{o.email}</a>
                 )}
               </div>
             ))}

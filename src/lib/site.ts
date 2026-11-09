@@ -31,6 +31,8 @@ export type Office = {
   lines: string[];
   /** Display format, e.g. "+49 151 2345 6789". Empty hides it. */
   phone: string;
+  /** Office-specific email. Empty hides it. */
+  email?: string;
   /** For search engines. */
   postal?: { street: string; postalCode: string; city: string; countryCode: string };
 };
@@ -52,6 +54,7 @@ export const offices: Office[] = [
       "24118 Kiel, Germany",
     ],
     phone: "", // TODO: add the German mobile number
+    email: "arqoratech@gmx.de",
     postal: { street: "Schauenburgerstraße 116", postalCode: "24118", city: "Kiel", countryCode: "DE" },
   },
 ];
