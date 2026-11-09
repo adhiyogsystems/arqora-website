@@ -5,7 +5,7 @@ import { liveServices } from "@/data/services";
 import type { Lang } from "@/i18n/config";
 import { localePath } from "@/i18n/config";
 import { dict } from "@/i18n/dict";
-import { offices, primaryEmail, site, siteText, telHref, whatsappLink } from "@/lib/site";
+import { legal, offices, primaryEmail, site, siteText, telHref, whatsappLink } from "@/lib/site";
 
 export function Footer({ lang }: { lang: Lang }) {
   const t = dict[lang].footer;
@@ -77,7 +77,14 @@ export function Footer({ lang }: { lang: Lang }) {
 
       <div className="border-t border-night-line">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-5 py-6 text-sm text-mute sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <span>© {new Date().getFullYear()} {site.name}. {t.rights}</span>
+          <span>
+            © {new Date().getFullYear()} {legal.operator}, {legal.operatorCountry[lang]}. {t.rights}
+            <span className="mt-1 block text-xs text-mute/70">
+              {lang === "de"
+                ? `${site.name} ist eine Marke von ${legal.operator}, ${legal.operatorCountry.de}.`
+                : `${site.name} is a brand of ${legal.operator}, ${legal.operatorCountry.en}.`}
+            </span>
+          </span>
           <span className="flex gap-5">
             <Link href={localePath(lang, "/impressum")} className="hover:text-white">{t.impressum}</Link>
             <Link href={localePath(lang, "/privacy")} className="hover:text-white">{t.privacy}</Link>

@@ -4,7 +4,7 @@ import { Inter, Sora } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import type { Lang } from "@/i18n/config";
-import { offices, site, siteText, siteUrl } from "@/lib/site";
+import { legal, offices, site, siteText, siteUrl } from "@/lib/site";
 import "@/app/globals.css";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
@@ -34,6 +34,8 @@ function orgJsonLd(lang: Lang) {
     "@type": "Organization",
     name: site.name,
     alternateName: site.shortName,
+    legalName: legal.operator,
+    parentOrganization: { "@type": "Organization", name: legal.operator, address: { "@type": "PostalAddress", addressCountry: "IN" } },
     slogan: siteText[lang].tagline,
     url: siteUrl.toString(),
     description: siteText[lang].description,

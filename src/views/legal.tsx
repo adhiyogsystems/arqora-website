@@ -43,6 +43,20 @@ const Lines = ({ lines }: { lines: string[] }) => (
   </p>
 );
 
+/** The legal entity: Adhiyog Systems, India, trading as Arqora Technology Solutions. */
+function operatorLines(lang: Lang): string[] {
+  const de = lang === "de";
+  return [
+    legal.operator,
+    ...(legal.legalForm[lang] ? [legal.legalForm[lang]] : []),
+    `${de ? "Sitz" : "Registered office"}: ${legal.operatorCountry[lang]}`,
+    de ? `Handelnd unter der Marke ${site.name}` : `Trading as ${site.name}`,
+  ];
+}
+
+/** Postal address in Germany, addressed to the legal entity. */
+const kielAddress = (lang: Lang) => [`${legal.operator} / ${site.name}`, ...germanOffice.lines[lang].slice(1)];
+
 function contactBlock(lang: Lang) {
   const emails = [germanOffice.email, site.email].filter(Boolean) as string[];
   return (
@@ -71,7 +85,7 @@ export const impressumMeta = (lang: Lang) =>
 
 export function ImpressumView({ lang }: { lang: Lang }) {
   const de = lang === "de";
-  const company = [site.name, ...(legal.legalForm[lang] ? [legal.legalForm[lang]] : []), de ? "Sitz: Indien" : "Registered office: India"];
+  const company = operatorLines(lang);
   const sections: Section[] = [
     {
       h: de ? "Angaben gemäß § 5 DDG" : "Information according to § 5 DDG (German Digital Services Act)",
@@ -79,7 +93,7 @@ export function ImpressumView({ lang }: { lang: Lang }) {
         <>
           <Lines lines={company} />
           <p className="pt-2 font-medium text-ink">{de ? "Kontaktanschrift in Deutschland" : "Contact address in Germany"}</p>
-          <Lines lines={germanOffice.lines[lang]} />
+          <Lines lines={kielAddress(lang)} />
         </>
       ),
     },
@@ -108,6 +122,16 @@ export function ImpressumView({ lang }: { lang: Lang }) {
           },
         ]
       : []),
+    {
+      h: de ? "Anwendbares Recht und Gerichtsstand" : "Governing law and jurisdiction",
+      body: (
+        <p>
+          {de
+            ? `Für alle Rechtsangelegenheiten im Zusammenhang mit dieser Website und unseren Leistungen gilt das Recht der Republik Indien. Gerichtsstand ist, soweit gesetzlich zulässig, Indien. Zwingende Verbraucherschutzvorschriften des Landes, in dem Verbraucher ihren gewöhnlichen Aufenthalt haben, bleiben unberührt.`
+            : `All legal matters relating to this website and our services are governed by the laws of the Republic of India, and the courts of India have jurisdiction to the extent permitted by law. Mandatory consumer protection rules of the country where a consumer lives remain unaffected.`}
+        </p>
+      ),
+    },
     {
       h: de ? "Verbraucherstreitbeilegung" : "Consumer dispute resolution",
       body: (
@@ -154,7 +178,9 @@ export function PrivacyView({ lang }: { lang: Lang }) {
           h: "1. Verantwortlicher",
           body: (
             <>
-              <Lines lines={germanOffice.lines.de} />
+              <Lines lines={operatorLines("de")} />
+              <p className="pt-2 font-medium text-ink">Kontaktanschrift in Deutschland</p>
+              <Lines lines={kielAddress("de")} />
               {contactBlock("de")}
             </>
           ),
@@ -222,7 +248,9 @@ export function PrivacyView({ lang }: { lang: Lang }) {
           h: "1. Controller",
           body: (
             <>
-              <Lines lines={germanOffice.lines.en} />
+              <Lines lines={operatorLines("en")} />
+              <p className="pt-2 font-medium text-ink">Contact address in Germany</p>
+              <Lines lines={kielAddress("en")} />
               {contactBlock("en")}
             </>
           ),

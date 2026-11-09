@@ -42,6 +42,9 @@ export const siteText: Record<Lang, { tagline: string; description: string; loca
  * the name of the owner or legal representative. Empty fields are hidden.
  */
 export const legal = {
+  /** The legal entity behind the Arqora brand. All legal matters are handled under Indian jurisdiction. */
+  operator: "Adhiyog Systems",
+  operatorCountry: { en: "India", de: "Indien" } as Record<Lang, string>,
   /** Owner or authorised representative, e.g. "Dr. Firstname Lastname". */
   owner: "",
   /** e.g. "Sole proprietorship (India)" or "Private Limited Company (India)". */
