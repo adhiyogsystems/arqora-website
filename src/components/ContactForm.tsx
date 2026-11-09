@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 
-import { site, whatsappLink } from "@/lib/site";
+import type { Lang } from "@/i18n/config";
+import { dict } from "@/i18n/dict";
+import { primaryEmail, site, whatsappLink } from "@/lib/site";
 
 type Option = { slug: string; title: string };
 
@@ -13,27 +15,28 @@ const field =
  * No backend yet: the form writes the enquiry into a WhatsApp message (when a
  * number is set in lib/site.ts) or opens the visitor's email app.
  */
-export function ContactForm({ services, defaultService }: { services: Option[]; defaultService?: string }) {
+export function ContactForm({ lang, services, defaultService }: { lang: Lang; services: Option[]; defaultService?: string }) {
+  const t = dict[lang].form;
+  const email = primaryEmail(lang);
   const [sent, setSent] = useState(false);
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-    const service = services.find((s) => s.slug === data.get("service"))?.title ?? "Not sure yet";
+    const service = services.find((s) => s.slug === data.get("service"))?.title ?? t.notSure;
     const text = [
-      `Name: ${data.get("name")}`,
-      `Phone: ${data.get("phone")}`,
-      data.get("business") ? `Business: ${data.get("business")}` : null,
-      `Service: ${service}`,
+      `${t.msgName}: ${data.get("name")}`,
+      `${t.msgPhone}: ${data.get("phone")}`,
+      data.get("business") ? `${t.msgBusiness}: ${data.get("business")}` : null,
+      `${t.msgService}: ${service}`,
       "",
       String(data.get("message") ?? ""),
     ]
       .filter((l) => l !== null)
       .join("\n");
 
-    const wa = whatsappLink(`New enquiry for ${site.name}\n\n${text}`);
-    const href =
-      wa ?? `mailto:${site.email}?subject=${encodeURIComponent(`Project enquiry: ${service}`)}&body=${encodeURIComponent(text)}`;
+    const wa = whatsappLink(`${t.msgNew} ${site.name}\n\n${text}`);
+    const href = wa ?? `mailto:${email}?subject=${encodeURIComponent(`${t.msgSubject}: ${service}`)}&body=${encodeURIComponent(text)}`;
     window.open(href, wa ? "_blank" : "_self");
     setSent(true);
   }
@@ -42,37 +45,37 @@ export function ContactForm({ services, defaultService }: { services: Option[]; 
     <form onSubmit={onSubmit} className="grid gap-5 rounded-3xl border border-ink/10 bg-white p-6 shadow-[0_30px_60px_-30px_rgba(14,18,34,0.25)] sm:p-9">
       <div className="grid gap-5 sm:grid-cols-2">
         <label className="text-sm font-medium">
-          Your name
+          {t.name}
           <input name="name" required autoComplete="name" className={field} />
         </label>
         <label className="text-sm font-medium">
-          Phone / WhatsApp
+          {t.phone}
           <input name="phone" required type="tel" inputMode="tel" autoComplete="tel" className={field} />
         </label>
       </div>
       <label className="text-sm font-medium">
-        Business or organisation <span className="font-normal text-ink-soft">(optional)</span>
+        {t.business} <span className="font-normal text-ink-soft">{t.optional}</span>
         <input name="business" autoComplete="organization" className={field} />
       </label>
       <label className="text-sm font-medium">
-        What do you need?
+        {t.need}
         <select name="service" defaultValue={defaultService ?? ""} className={field}>
-          <option value="">Not sure yet</option>
+          <option value="">{t.notSure}</option>
           {services.map((s) => (
             <option key={s.slug} value={s.slug}>{s.title}</option>
           ))}
         </select>
       </label>
       <label className="text-sm font-medium">
-        Tell us a little more
-        <textarea name="message" required rows={5} className={field} placeholder="What does your business do, and what should the website or software help with?" />
+        {t.more}
+        <textarea name="message" required rows={5} className={field} placeholder={t.placeholder} />
       </label>
       <button type="submit" className="rounded-xl bg-night px-6 py-4 font-semibold text-white transition-colors hover:bg-brand">
-        Send enquiry
+        {t.send}
       </button>
       {sent && (
         <p role="status" className="rounded-xl bg-saffron-soft px-4 py-3 text-sm">
-          Thanks! Your message is ready to send. If nothing opened, write to us at {site.email}.
+          {t.sent} {email}.
         </p>
       )}
     </form>

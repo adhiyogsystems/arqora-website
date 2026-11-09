@@ -5,18 +5,46 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { Logo } from "@/components/Logo";
+import type { Lang } from "@/i18n/config";
+import { localePath, switchPath } from "@/i18n/config";
+import { dict } from "@/i18n/dict";
 
-const nav = [
-  { href: "/services", label: "services" },
-  { href: "/work", label: "work" },
-  { href: "/about", label: "about" },
-];
+/** Globe + language code. Goes to the same page in the other language. */
+function LangSwitch({ lang, dark, pathname }: { lang: Lang; dark: boolean; pathname: string }) {
+  const target = switchPath(pathname);
+  return (
+    <a
+      href={target.href}
+      hrefLang={target.lang}
+      lang={target.lang}
+      title={dict[lang].switchTo}
+      aria-label={dict[lang].switchTo}
+      className={`flex items-center gap-1.5 rounded-xl border px-3 py-2 text-[13px] font-semibold uppercase tracking-wide transition-colors ${
+        dark ? "border-white/15 hover:bg-white/10" : "border-ink/12 hover:bg-ink/5"
+      }`}
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z" />
+      </svg>
+      <span>{lang}</span>
+      <span aria-hidden="true" className="opacity-40">/</span>
+      <span className="opacity-60">{target.lang}</span>
+    </a>
+  );
+}
 
 /**
  * Floating pill header. It reads the data-theme of whatever section is under
  * it and switches between a dark glass and a light glass look.
  */
-export function Header() {
+export function Header({ lang }: { lang: Lang }) {
+  const t = dict[lang].nav;
+  const nav = [
+    { href: localePath(lang, "/services"), label: t.services },
+    { href: localePath(lang, "/work"), label: t.work },
+    { href: localePath(lang, "/about"), label: t.about },
+  ];
   const [open, setOpen] = useState(false);
   const [dark, setDark] = useState(true);
   const [scrolled, setScrolled] = useState(false);
@@ -63,8 +91,8 @@ export function Header() {
           scrolled ? "" : "sm:border-transparent sm:bg-transparent sm:shadow-none sm:backdrop-blur-none"
         }`}
       >
-        <div className="flex h-14 items-center justify-between pl-3 pr-2 sm:h-16 sm:pl-4">
-          <Link href="/" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
+        <div className="flex h-14 items-center justify-between gap-2 pl-3 pr-2 sm:h-16 sm:pl-4">
+          <Link href={localePath(lang, "/")} className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
             <Logo size={32} />
             <span className="leading-none">
               <span className="block font-display text-[17px] font-semibold tracking-tight">arqora</span>
@@ -90,27 +118,33 @@ export function Header() {
                 </Link>
               );
             })}
+            <span className="ml-2">
+              <LangSwitch lang={lang} dark={dark} pathname={pathname} />
+            </span>
             <Link
-              href="/contact"
-              className={`ml-3 rounded-xl px-5 py-2.5 text-[15px] font-semibold transition-colors ${
+              href={localePath(lang, "/contact")}
+              className={`ml-2 rounded-xl px-5 py-2.5 text-[15px] font-semibold transition-colors ${
                 dark ? "bg-white text-night hover:bg-saffron" : "bg-night text-white hover:bg-brand"
               }`}
             >
-              let&apos;s talk
+              {t.talk}
             </Link>
           </nav>
 
-          <button
-            type="button"
-            className="rounded-xl p-2.5 md:hidden"
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
-            onClick={() => setOpen((v) => !v)}
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 8h16M4 16h16" />}
-            </svg>
-          </button>
+          <div className="flex items-center gap-1 md:hidden">
+            <LangSwitch lang={lang} dark={dark} pathname={pathname} />
+            <button
+              type="button"
+              className="rounded-xl p-2.5"
+              aria-label={open ? t.menuClose : t.menuOpen}
+              aria-expanded={open}
+              onClick={() => setOpen((v) => !v)}
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 8h16M4 16h16" />}
+              </svg>
+            </button>
+          </div>
         </div>
 
         {open && (
@@ -126,11 +160,11 @@ export function Header() {
               </Link>
             ))}
             <Link
-              href="/contact"
+              href={localePath(lang, "/contact")}
               onClick={() => setOpen(false)}
               className={`mt-3 block rounded-xl py-3.5 text-center font-semibold ${dark ? "bg-white text-night" : "bg-night text-white"}`}
             >
-              let&apos;s talk
+              {t.talk}
             </Link>
           </nav>
         )}

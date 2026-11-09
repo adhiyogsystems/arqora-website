@@ -4,35 +4,24 @@ import { ServiceRows } from "@/components/ServiceRows";
 import { ButtonLink, Container, CtaBand, Eyebrow, Words } from "@/components/ui";
 import { WhyTabs } from "@/components/WhyTabs";
 import { faqs } from "@/data/faq";
-import { projects } from "@/data/projects";
+import { getProjects } from "@/data/projects";
+import type { Lang } from "@/i18n/config";
+import { localePath } from "@/i18n/config";
+import { dict } from "@/i18n/dict";
+import { site } from "@/lib/site";
 
-const capabilities = [
-  "websites",
-  "web apps",
-  "android & ios",
-  "crm",
-  "billing & gst",
-  "dashboards",
-  "automation",
-  "ai chatbots",
-  "e-governance",
-  "seo",
-];
+export function HomeView({ lang }: { lang: Lang }) {
+  const t = dict[lang];
+  const featured = getProjects(lang)[0];
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    inLanguage: lang,
+    mainEntity: faqs[lang].map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+  };
+  const l1 = t.hero.line1.split(" ").length;
+  const l2 = t.hero.line2.split(" ").length;
 
-const steps = [
-  { title: "talk", text: "A short call or chat to understand your business and what you need." },
-  { title: "plan & price", text: "A written plan, timeline and fixed price. No surprises later." },
-  { title: "build", text: "We build in small steps and show you progress every week." },
-  { title: "launch & grow", text: "We go live, train your team, and stay on for support." },
-];
-
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
-};
-
-export default function Home() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
@@ -46,22 +35,22 @@ export default function Home() {
         </div>
 
         <Container className="relative flex flex-1 flex-col justify-center pb-16 pt-36">
-          <p className="word text-xs font-semibold uppercase tracking-[0.28em] text-mute">
-            arqora technology solutions
-          </p>
-          <h1 className="mt-7 max-w-5xl font-display text-[3.1rem] font-semibold leading-[0.98] tracking-[-0.045em] sm:text-7xl md:text-[6.5rem]">
-            <Words text="tech solutions" start={1} />
+          <p className="word text-xs font-semibold uppercase tracking-[0.28em] text-mute">{site.name}</p>
+          <h1
+            lang={lang}
+            className="mt-7 max-w-5xl font-display text-[2.6rem] font-semibold leading-[0.98] tracking-[-0.045em] [hyphens:auto] min-[400px]:text-[3.1rem] sm:text-7xl md:text-[6.5rem]"
+          >
+            <Words text={t.hero.line1} start={1} />
             <br className="hidden sm:block" />
-            <Words text="for" start={3} />
-            <Words text="every business." start={4} className="text-gradient" />
+            <Words text={t.hero.line2} start={1 + l1} />
+            <Words text={t.hero.accent} start={1 + l1 + l2} className="text-gradient" />
           </h1>
           <p className="word mt-8 max-w-xl text-lg leading-relaxed text-mute sm:text-xl" style={{ "--i": 8 } as React.CSSProperties}>
-            We design and build websites, apps, CRM and business software, and data solutions for businesses worldwide.
-            One partner for everything your business runs on.
+            {t.hero.intro}
           </p>
           <div className="word mt-10 flex flex-col gap-3 sm:flex-row" style={{ "--i": 10 } as React.CSSProperties}>
-            <ButtonLink href="/contact" variant="light">start a project</ButtonLink>
-            <ButtonLink href="/work" variant="ghost-light">see our work</ButtonLink>
+            <ButtonLink href={localePath(lang, "/contact")} variant="light">{t.hero.start}</ButtonLink>
+            <ButtonLink href={localePath(lang, "/work")} variant="ghost-light">{t.hero.work}</ButtonLink>
           </div>
         </Container>
 
@@ -70,7 +59,7 @@ export default function Home() {
             <div className="marquee">
               {[0, 1].map((copy) => (
                 <ul key={copy} aria-hidden={copy === 1} className="flex shrink-0 items-center">
-                  {capabilities.map((c) => (
+                  {t.capabilities.map((c) => (
                     <li key={c} className="flex items-center gap-8 pr-8 font-display text-lg text-white/55 sm:text-xl">
                       {c}
                       <span className="h-1.5 w-1.5 rounded-full bg-saffron/80" />
@@ -86,20 +75,15 @@ export default function Home() {
       {/* Statement */}
       <section data-theme="light" className="bg-cream py-28 sm:py-36">
         <Container>
-          <Eyebrow>who we are</Eyebrow>
+          <Eyebrow>{t.who.eyebrow}</Eyebrow>
           <p data-reveal className="mt-8 max-w-5xl font-display text-3xl font-medium leading-[1.2] tracking-[-0.025em] sm:text-5xl">
-            we design, build and run the software your business depends on,{" "}
-            <span className="text-ink-soft">from the first website to the systems behind it.</span>
+            {t.who.lead} <span className="text-ink-soft">{t.who.rest}</span>
           </p>
           <div data-reveal className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-ink/10 bg-ink/10 sm:grid-cols-3">
-            {[
-              ["design", "Interfaces that are clear, fast and easy to use on any phone."],
-              ["engineering", "Full-stack development, from databases to polished front ends."],
-              ["data", "Clean data, live dashboards and automation that saves hours."],
-            ].map(([t, d]) => (
-              <div key={t} className="bg-cream p-7">
-                <h3 className="font-display text-xl font-semibold">{t}</h3>
-                <p className="mt-2 text-ink-soft">{d}</p>
+            {t.who.cells.map(([title, text]) => (
+              <div key={title} className="bg-cream p-7">
+                <h3 className="font-display text-xl font-semibold">{title}</h3>
+                <p className="mt-2 text-ink-soft">{text}</p>
               </div>
             ))}
           </div>
@@ -111,17 +95,15 @@ export default function Home() {
         <Container>
           <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
             <div>
-              <Eyebrow>what we do</Eyebrow>
+              <Eyebrow>{t.servicesSection.eyebrow}</Eyebrow>
               <h2 data-reveal className="mt-6 font-display text-5xl font-semibold tracking-[-0.04em] sm:text-6xl">
-                services
+                {t.servicesSection.title}
               </h2>
             </div>
-            <p data-reveal className="max-w-sm text-ink-soft">
-              Pick one or combine them. Most clients start with one clear goal and grow from there.
-            </p>
+            <p data-reveal className="max-w-sm text-ink-soft">{t.servicesSection.side}</p>
           </div>
           <div className="mt-14">
-            <ServiceRows />
+            <ServiceRows lang={lang} />
           </div>
         </Container>
       </section>
@@ -130,12 +112,12 @@ export default function Home() {
       <section data-theme="dark" className="relative overflow-hidden bg-night py-28 text-white sm:py-36">
         <div aria-hidden="true" className="orb pointer-events-none absolute -left-40 top-10 h-[30rem] w-[30rem] rounded-full bg-[radial-gradient(circle,rgba(140,155,255,0.18),transparent_65%)]" />
         <Container className="relative">
-          <Eyebrow light>why arqora</Eyebrow>
+          <Eyebrow light>{t.why.eyebrow}</Eyebrow>
           <h2 data-reveal className="mt-6 max-w-3xl font-display text-4xl font-semibold leading-[1.05] tracking-[-0.035em] sm:text-6xl">
-            engineering quality, <span className="text-gradient">with a partner who stays.</span>
+            {t.why.title} <span className="text-gradient">{t.why.accent}</span>
           </h2>
           <div className="mt-16">
-            <WhyTabs />
+            <WhyTabs items={t.why.items} label={t.why.label} />
           </div>
         </Container>
       </section>
@@ -145,17 +127,17 @@ export default function Home() {
         <Container>
           <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
             <div>
-              <Eyebrow>selected work</Eyebrow>
+              <Eyebrow>{t.workSection.eyebrow}</Eyebrow>
               <h2 data-reveal className="mt-6 font-display text-5xl font-semibold tracking-[-0.04em] sm:text-6xl">
-                live and in use.
+                {t.workSection.title}
               </h2>
             </div>
             <div data-reveal>
-              <ButtonLink href="/work" variant="ghost">all projects</ButtonLink>
+              <ButtonLink href={localePath(lang, "/work")} variant="ghost">{t.workSection.all}</ButtonLink>
             </div>
           </div>
           <div className="mt-16">
-            <ProjectShowcase project={projects[0]} />
+            <ProjectShowcase project={featured} lang={lang} />
           </div>
         </Container>
       </section>
@@ -163,12 +145,12 @@ export default function Home() {
       {/* Process */}
       <section data-theme="light" className="bg-white py-28 sm:py-36">
         <Container>
-          <Eyebrow>how we work</Eyebrow>
+          <Eyebrow>{t.process.eyebrow}</Eyebrow>
           <h2 data-reveal className="mt-6 max-w-3xl font-display text-4xl font-semibold leading-[1.05] tracking-[-0.035em] sm:text-6xl">
-            from first call to launch.
+            {t.process.title}
           </h2>
           <ol className="mt-16 grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
-            {steps.map((s, i) => (
+            {t.process.steps.map((s, i) => (
               <li key={s.title} data-reveal style={{ "--d": `${i * 90}ms` } as React.CSSProperties} className="relative">
                 <div className="flex items-center gap-4">
                   <span className="flex h-12 w-12 items-center justify-center rounded-full bg-night font-display text-sm font-semibold text-white">
@@ -188,17 +170,17 @@ export default function Home() {
       <section data-theme="light" className="border-t border-ink/10 bg-white py-28 sm:py-36">
         <Container className="grid gap-12 md:grid-cols-[0.8fr_1.2fr] md:gap-20">
           <div>
-            <Eyebrow>faq</Eyebrow>
+            <Eyebrow>{t.faqSection.eyebrow}</Eyebrow>
             <h2 data-reveal className="mt-6 font-display text-4xl font-semibold leading-[1.05] tracking-[-0.035em] sm:text-5xl">
-              questions, answered.
+              {t.faqSection.title}
             </h2>
-            <p data-reveal className="mt-5 max-w-xs text-ink-soft">Anything else? Ask us directly on WhatsApp or email.</p>
+            <p data-reveal className="mt-5 max-w-xs text-ink-soft">{t.faqSection.side}</p>
           </div>
-          <Faq />
+          <Faq lang={lang} />
         </Container>
       </section>
 
-      <CtaBand />
+      <CtaBand lang={lang} />
     </>
   );
 }

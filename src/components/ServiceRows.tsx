@@ -1,15 +1,17 @@
 import Link from "next/link";
 
 import { liveServices } from "@/data/services";
+import type { Lang } from "@/i18n/config";
+import { localePath } from "@/i18n/config";
 
 /** Large numbered service rows. Details open on hover (desktop) and always show on phones. */
-export function ServiceRows() {
+export function ServiceRows({ lang }: { lang: Lang }) {
   return (
     <div className="border-b border-ink/10">
-      {liveServices().map((s, i) => (
+      {liveServices(lang).map((s, i) => (
         <Link
           key={s.slug}
-          href={`/services/${s.slug}`}
+          href={localePath(lang, `/services/${s.slug}`)}
           data-reveal
           style={{ "--d": `${i * 60}ms` } as React.CSSProperties}
           className="group block border-t border-ink/10 py-8 outline-none md:py-10"
@@ -18,7 +20,7 @@ export function ServiceRows() {
             <span className="font-display text-sm tabular-nums text-ink-soft transition-colors group-hover:text-saffron">
               0{i + 1}
             </span>
-            <h3 className="font-display text-[1.7rem] font-semibold leading-tight tracking-[-0.03em] transition-transform duration-500 group-hover:translate-x-2 sm:text-4xl md:text-5xl">
+            <h3 className="font-display text-[1.7rem] font-semibold leading-tight tracking-[-0.03em] transition-transform duration-500 [hyphens:auto] group-hover:translate-x-2 sm:text-4xl md:text-5xl">
               {s.title.toLowerCase()}
             </h3>
             <span className="flex h-11 w-11 items-center justify-center rounded-full border border-ink/15 transition-all duration-500 group-hover:-rotate-45 group-hover:border-night group-hover:bg-night group-hover:text-white md:h-14 md:w-14">

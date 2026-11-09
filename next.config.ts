@@ -11,6 +11,10 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   agentRules: false,
   poweredByHeader: false,
+  experimental: {
+    // English and German have separate root layouts, so unmatched URLs need a global 404.
+    globalNotFound: true,
+  },
   turbopack: {
     root: __dirname,
     rules: {

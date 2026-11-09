@@ -2,36 +2,15 @@
 
 import { useState } from "react";
 
-const items = [
-  {
-    label: "speed",
-    title: "launch in weeks, not months.",
-    text: "We start with what matters most, ship it quickly, and keep improving in small, steady steps you can see every week.",
-  },
-  {
-    label: "fair cost",
-    title: "pay only for what you need.",
-    text: "Fixed, written quotes before work begins. Start small, then add features when your business is ready for them.",
-  },
-  {
-    label: "ownership",
-    title: "you own everything.",
-    text: "Your code, your domain, your data. Always handed over to you, never locked in.",
-  },
-  {
-    label: "partnership",
-    title: "we stay after launch.",
-    text: "Maintenance, support and new features as you grow, with direct access to the engineers who built it.",
-  },
-];
+type Item = { label: string; title: string; text: string };
 
-export function WhyTabs() {
+export function WhyTabs({ items, label }: { items: Item[]; label: string }) {
   const [active, setActive] = useState(0);
   const item = items[active];
 
   return (
     <div className="grid gap-12 md:grid-cols-[0.8fr_1.2fr] md:gap-20">
-      <div role="tablist" aria-label="Why Arqora" className="flex flex-row flex-wrap gap-2 md:flex-col md:gap-1">
+      <div role="tablist" aria-label={label} className="flex flex-row flex-wrap gap-2 md:flex-col md:gap-1">
         {items.map((it, i) => {
           const on = i === active;
           return (
@@ -61,7 +40,7 @@ export function WhyTabs() {
       </div>
 
       <div role="tabpanel" key={active} className="fade-in md:pt-3">
-        <h3 className="font-display text-4xl font-semibold leading-[1.05] tracking-[-0.03em] sm:text-5xl md:text-6xl">
+        <h3 className="font-display text-4xl font-semibold leading-[1.05] tracking-[-0.03em] [hyphens:auto] sm:text-5xl md:text-6xl">
           {item.title}
         </h3>
         <p className="mt-6 max-w-lg text-lg leading-relaxed text-mute">{item.text}</p>

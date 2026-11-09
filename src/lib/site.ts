@@ -1,3 +1,5 @@
+import type { Lang } from "@/i18n/config";
+
 /**
  * One place for everything that identifies the business.
  * TODO: switch PRODUCTION_URL if the final domain is different from arqoratech.com.
@@ -14,21 +16,51 @@ export const siteUrl = new URL(resolveSiteUrl());
 export const site = {
   name: "Arqora Technology Solutions",
   shortName: "Arqora",
-  tagline: "Tech solutions for every business.",
-  description:
-    "Arqora Technology Solutions builds websites, apps, CRM and business software, and data and automation solutions for businesses worldwide.",
-  location: "India · Germany",
   // Digits only, with country code, e.g. "919876543210". Empty hides WhatsApp links.
   whatsapp: "918421488114",
   phone: "+91 84214 88114",
   email: "adhiyogsystems@gmail.com",
 } as const;
 
+export const siteText: Record<Lang, { tagline: string; description: string; location: string }> = {
+  en: {
+    tagline: "Tech solutions for every business.",
+    description:
+      "Arqora Technology Solutions builds websites, apps, CRM and business software, and data and automation solutions for businesses worldwide.",
+    location: "India · Germany",
+  },
+  de: {
+    tagline: "Tech-Lösungen für jedes Unternehmen.",
+    description:
+      "Arqora Technology Solutions entwickelt Websites, Apps, CRM- und Unternehmenssoftware sowie Daten- und Automatisierungslösungen für Unternehmen weltweit.",
+    location: "Indien · Deutschland",
+  },
+};
+
+/**
+ * Details for the Impressum (legal notice). Fill these in: German law expects
+ * the name of the owner or legal representative. Empty fields are hidden.
+ */
+export const legal = {
+  /** Owner or authorised representative, e.g. "Dr. Firstname Lastname". */
+  owner: "",
+  /** e.g. "Sole proprietorship (India)" or "Private Limited Company (India)". */
+  legalForm: { en: "", de: "" } as Record<Lang, string>,
+  /** Company registration, e.g. "CIN U12345MH2026PTC123456" or Udyam number. */
+  registration: "",
+  /** GST or EU VAT number, if any. */
+  taxId: "",
+  /** Shown before the Kiel address, e.g. "c/o Friend's Company GmbH". */
+  careOf: "",
+  updated: { en: "November 2026", de: "November 2026" } as Record<Lang, string>,
+};
+
 export type Office = {
-  country: string;
-  label: string;
+  key: string;
+  country: Record<Lang, string>;
+  label: Record<Lang, string>;
   /** Postal address lines, shown as written. Empty for an office without a public address. */
-  lines: string[];
+  lines: Record<Lang, string[]>;
   /** Display format, e.g. "+49 151 2345 6789". Empty hides it. */
   phone: string;
   /** Office-specific email. Empty hides it. */
@@ -37,27 +69,34 @@ export type Office = {
   postal?: { street: string; postalCode: string; city: string; countryCode: string };
 };
 
+const kielStreet = ["KITZ – Kieler Innovations- und Technologiezentrum", "Schauenburgerstraße 116"];
+
 export const offices: Office[] = [
   {
-    country: "India",
-    label: "Headquarters",
-    lines: [],
+    key: "in",
+    country: { en: "India", de: "Indien" },
+    label: { en: "Headquarters", de: "Hauptsitz" },
+    lines: { en: [], de: [] },
     phone: site.phone,
   },
   {
-    country: "Germany",
-    label: "Kiel office",
-    lines: [
-      site.name,
-      "KITZ – Kieler Innovations- und Technologiezentrum",
-      "Schauenburgerstraße 116",
-      "24118 Kiel, Germany",
-    ],
+    key: "de",
+    country: { en: "Germany", de: "Deutschland" },
+    label: { en: "Kiel office", de: "Büro Kiel" },
+    lines: {
+      en: [site.name, ...(legal.careOf ? [legal.careOf] : []), ...kielStreet, "24118 Kiel, Germany"],
+      de: [site.name, ...(legal.careOf ? [legal.careOf] : []), ...kielStreet, "24118 Kiel, Deutschland"],
+    },
     phone: "", // TODO: add the German mobile number
     email: "arqoratech@gmx.de",
     postal: { street: "Schauenburgerstraße 116", postalCode: "24118", city: "Kiel", countryCode: "DE" },
   },
 ];
+
+export const germanOffice = offices.find((o) => o.key === "de")!;
+
+/** The main email for a language: German visitors see the German address first. */
+export const primaryEmail = (lang: Lang) => (lang === "de" && germanOffice.email ? germanOffice.email : site.email);
 
 export const telHref = (phone: string) => `tel:${phone.replace(/\s/g, "")}`;
 
