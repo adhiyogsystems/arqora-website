@@ -4,6 +4,7 @@ import { Inter, Sora } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import type { Lang } from "@/i18n/config";
+import { ogImage } from "@/i18n/config";
 import { legal, offices, site, siteText, siteUrl } from "@/lib/site";
 import "@/app/globals.css";
 
@@ -15,7 +16,14 @@ export function rootMetadata(lang: Lang): Metadata {
     metadataBase: siteUrl,
     title: { default: `${site.name} | ${siteText[lang].tagline.replace(/\.$/, "")}`, template: `%s | ${site.shortName}` },
     description: siteText[lang].description,
-    openGraph: { type: "website", siteName: site.name, locale: lang === "de" ? "de_DE" : "en_US" },
+    openGraph: { type: "website", siteName: site.name, locale: lang === "de" ? "de_DE" : "en_US", images: [ogImage(lang)] },
+    twitter: { card: "summary_large_image", images: [ogImage(lang).url] },
+    applicationName: site.name,
+    authors: [{ name: legal.operator }],
+    creator: legal.operator,
+    publisher: legal.operator,
+    formatDetection: { telephone: false },
+    category: "technology",
   };
 }
 
@@ -71,6 +79,20 @@ export function RootDocument({ lang, children }: { lang: Lang; children: React.R
       </head>
       <body className="flex min-h-full flex-col font-sans">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd(lang)) }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: site.name,
+              alternateName: site.shortName,
+              url: new URL(lang === "de" ? "/de" : "/", siteUrl).toString(),
+              inLanguage: lang,
+              publisher: { "@type": "Organization", name: site.name },
+            }),
+          }}
+        />
         <Header lang={lang} />
         <main className="flex-1">{children}</main>
         <Footer lang={lang} />

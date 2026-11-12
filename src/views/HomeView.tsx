@@ -142,6 +142,77 @@ export function HomeView({ lang }: { lang: Lang }) {
         </Container>
       </section>
 
+      {/* Engagement models */}
+      <section data-theme="light" className="bg-white py-28 sm:py-36">
+        <Container>
+          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+            <div>
+              <Eyebrow>{t.models.eyebrow}</Eyebrow>
+              <h2 data-reveal className="mt-6 font-display text-5xl font-semibold tracking-[-0.04em] [hyphens:auto] sm:text-6xl">
+                {t.models.title}
+              </h2>
+            </div>
+            <p data-reveal className="max-w-sm text-ink-soft">{t.models.side}</p>
+          </div>
+          <div className="mt-14 grid gap-5 lg:grid-cols-3">
+            {t.models.items.map((m, i) => (
+              <div
+                key={m.title}
+                data-reveal
+                style={{ "--d": `${i * 90}ms` } as React.CSSProperties}
+                className="group relative flex flex-col rounded-3xl border border-ink/10 p-8 transition-colors hover:border-night"
+              >
+                <span className="w-fit rounded-full bg-cream px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-ink-soft">
+                  {m.tag}
+                </span>
+                <h3 className="mt-8 font-display text-3xl font-semibold tracking-[-0.03em]">{m.title}</h3>
+                <p className="mt-3 flex-1 leading-relaxed text-ink-soft">{m.text}</p>
+                <span className="mt-8 h-px w-full bg-gradient-to-r from-iris to-saffron opacity-40 transition-opacity group-hover:opacity-100" />
+              </div>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* Global delivery */}
+      <section data-theme="dark" className="relative overflow-hidden bg-night py-28 text-white sm:py-36">
+        <div aria-hidden="true" className="orb pointer-events-none absolute -right-40 bottom-0 h-[32rem] w-[32rem] rounded-full bg-[radial-gradient(circle,rgba(240,160,75,0.16),transparent_65%)]" />
+        <Container className="relative grid gap-14 lg:grid-cols-[1fr_1fr] lg:gap-20">
+          <div>
+            <Eyebrow light>{t.global.eyebrow}</Eyebrow>
+            <h2 data-reveal className="mt-6 font-display text-5xl font-semibold leading-[1] tracking-[-0.04em] sm:text-7xl">
+              {t.global.title} <span className="text-gradient">{t.global.accent}</span>
+            </h2>
+            <p data-reveal className="mt-7 max-w-md text-lg leading-relaxed text-mute">{t.global.text}</p>
+          </div>
+          <dl className="grid grid-cols-2 gap-px self-end overflow-hidden rounded-3xl border border-night-line bg-night-line">
+            {t.global.points.map(([k, v], i) => (
+              <div key={k} data-reveal style={{ "--d": `${i * 70}ms` } as React.CSSProperties} className="bg-night p-6 sm:p-8">
+                <dt className="font-display text-2xl font-semibold sm:text-3xl">{k}</dt>
+                <dd className="mt-2 text-sm text-mute sm:text-base">{v}</dd>
+              </div>
+            ))}
+          </dl>
+        </Container>
+      </section>
+
+      {/* Industries */}
+      <section data-theme="light" className="bg-cream py-28 sm:py-36">
+        <Container>
+          <Eyebrow>{t.industries.eyebrow}</Eyebrow>
+          <h2 data-reveal className="mt-6 font-display text-5xl font-semibold tracking-[-0.04em] sm:text-6xl">{t.industries.title}</h2>
+          <ul className="mt-14 grid gap-px overflow-hidden rounded-3xl border border-ink/10 bg-ink/10 sm:grid-cols-2 lg:grid-cols-3">
+            {t.industries.items.map(([name, text], i) => (
+              <li key={name} data-reveal style={{ "--d": `${i * 60}ms` } as React.CSSProperties} className="bg-cream p-7 sm:p-8">
+                <span className="font-display text-sm text-saffron">0{i + 1}</span>
+                <h3 className="mt-3 font-display text-2xl font-semibold tracking-[-0.02em]">{name}</h3>
+                <p className="mt-2 text-ink-soft">{text}</p>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </section>
+
       {/* Process */}
       <section data-theme="light" className="bg-white py-28 sm:py-36">
         <Container>

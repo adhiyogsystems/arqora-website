@@ -32,6 +32,14 @@ export const faqs: Record<Lang, { q: string; a: string }[]> = {
       a: "Yes. We offer monthly maintenance plans covering updates, fixes, hosting and small improvements, plus new features as you grow.",
     },
     {
+      q: "What engagement models do you offer?",
+      a: "Fixed-price projects, dedicated developers billed monthly, and monthly care and growth plans after launch. We recommend the right one after a short call.",
+    },
+    {
+      q: "Will you sign an NDA?",
+      a: "Yes. We are happy to sign a non-disclosure agreement before you share project details.",
+    },
+    {
       q: "What technology do you use?",
       a: "Modern, proven tools such as Next.js, React, TypeScript, Node.js and Python, hosted on fast cloud platforms. We pick what suits your project, not what is trendy.",
     },
@@ -64,6 +72,14 @@ export const faqs: Record<Lang, { q: string; a: string }[]> = {
     {
       q: "Bieten Sie Support nach dem Launch?",
       a: "Ja. Wir bieten monatliche Wartungspakete mit Updates, Fehlerbehebungen, Hosting und kleinen Verbesserungen sowie neue Funktionen, wenn Sie wachsen.",
+    },
+    {
+      q: "Welche Kooperationsmodelle bieten Sie an?",
+      a: "Festpreisprojekte, dedizierte Entwickler mit monatlicher Abrechnung und monatliche Betreuungspakete nach dem Launch. Nach einem kurzen Gespräch empfehlen wir das passende Modell.",
+    },
+    {
+      q: "Unterzeichnen Sie eine Geheimhaltungsvereinbarung (NDA)?",
+      a: "Ja. Wir unterzeichnen gerne eine Geheimhaltungsvereinbarung, bevor Sie Projektdetails teilen.",
     },
     {
       q: "Welche Technologien nutzen Sie?",

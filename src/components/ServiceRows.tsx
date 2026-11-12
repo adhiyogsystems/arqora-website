@@ -14,7 +14,7 @@ export function ServiceRows({ lang }: { lang: Lang }) {
           href={localePath(lang, `/services/${s.slug}`)}
           data-reveal
           style={{ "--d": `${i * 60}ms` } as React.CSSProperties}
-          className="group block border-t border-ink/10 py-8 outline-none md:py-10"
+          className="group block border-t border-ink/10 py-8 outline-none focus-visible:rounded-xl focus-visible:ring-2 focus-visible:ring-iris focus-visible:ring-offset-4 md:py-10"
         >
           <div className="grid grid-cols-[2.5rem_1fr_auto] items-center gap-4 md:grid-cols-[5rem_1fr_auto]">
             <span className="font-display text-sm tabular-nums text-ink-soft transition-colors group-hover:text-saffron">

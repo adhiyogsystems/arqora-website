@@ -2,13 +2,19 @@ import type { Lang } from "@/i18n/config";
 
 /**
  * One place for everything that identifies the business.
- * TODO: switch PRODUCTION_URL if the final domain is different from arqoratech.com.
+ *
+ * The public address follows Vercel's production domain automatically: today
+ * arqoratech.vercel.app, and the custom domain (e.g. arqoratech.com) as soon as
+ * it is connected and set as the production domain in Vercel. Canonical links,
+ * hreflang and the sitemap all use this, so they never point at a domain we
+ * do not serve. NEXT_PUBLIC_SITE_URL overrides it if ever needed.
  */
-export const PRODUCTION_URL = "https://www.arqoratech.com";
+const FALLBACK_URL = "https://arqoratech.vercel.app";
 
 function resolveSiteUrl(): string {
-  if (process.env.NODE_ENV === "production") return PRODUCTION_URL;
-  return process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  return process.env.NODE_ENV === "production" ? FALLBACK_URL : "http://localhost:3000";
 }
 
 export const siteUrl = new URL(resolveSiteUrl());
@@ -22,18 +28,24 @@ export const site = {
   email: "adhiyogsystems@gmail.com",
 } as const;
 
-export const siteText: Record<Lang, { tagline: string; description: string; location: string }> = {
+export const siteText: Record<Lang, { tagline: string; description: string; location: string; seoTitle: string; seoDescription: string }> = {
   en: {
     tagline: "Tech solutions for every business.",
     description:
       "Arqora Technology Solutions builds websites, apps, CRM and business software, and data and automation solutions for businesses worldwide.",
     location: "India · Germany",
+    seoTitle: "Arqora | Web, App & Custom Software Development Company",
+    seoDescription:
+      "Global software development partner with teams in India and Germany: websites and SEO, PWA and mobile apps, custom CRM, dashboards and automation. Fixed quotes.",
   },
   de: {
     tagline: "Tech-Lösungen für jedes Unternehmen.",
     description:
       "Arqora Technology Solutions entwickelt Websites, Apps, CRM- und Unternehmenssoftware sowie Daten- und Automatisierungslösungen für Unternehmen weltweit.",
     location: "Indien · Deutschland",
+    seoTitle: "Arqora | Web-, App- & Softwareentwicklung aus Kiel und Indien",
+    seoDescription:
+      "Ihr Partner für Softwareentwicklung: Websites & SEO, PWA- und App-Entwicklung, individuelle CRM-Software, Dashboards und Automatisierung. Festpreisangebote.",
   },
 };
 

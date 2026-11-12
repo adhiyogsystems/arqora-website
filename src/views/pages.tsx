@@ -6,11 +6,11 @@ import { ProjectShowcase } from "@/components/ProjectShowcase";
 import { ServiceRows } from "@/components/ServiceRows";
 import { ButtonLink, Container, CtaBand, Eyebrow, PageHero } from "@/components/ui";
 import { getProjects } from "@/data/projects";
-import { getService, liveServices } from "@/data/services";
+import { getService, liveServices, serviceSeo } from "@/data/services";
 import type { Lang } from "@/i18n/config";
 import { localePath, pageMetadata } from "@/i18n/config";
 import { dict } from "@/i18n/dict";
-import { offices, primaryEmail, site, telHref, whatsappLink } from "@/lib/site";
+import { offices, primaryEmail, site, siteUrl, telHref, whatsappLink } from "@/lib/site";
 
 /* ---------- Services ---------- */
 
@@ -36,17 +36,73 @@ export const serviceParams = () => liveServices("en").map((s) => ({ slug: s.slug
 
 export function serviceMeta(lang: Lang, slug: string) {
   const s = getService(lang, slug);
-  return s ? pageMetadata(lang, `/services/${s.slug}`, s.title, s.short) : {};
+  const seo = serviceSeo(lang, slug);
+  return s ? pageMetadata(lang, `/services/${s.slug}`, seo?.seoTitle ?? s.title, seo?.seoDescription ?? s.short) : {};
 }
+
+/** Breadcrumb trail for search results: Home › Services › This service. */
+function breadcrumbs(lang: Lang, items: { name: string; path: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((it, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: it.name,
+      item: new URL(localePath(lang, it.path), siteUrl).toString(),
+    })),
+  };
+}
+
+const JsonLd = ({ data }: { data: object }) => (
+  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />
+);
 
 export function ServiceView({ lang, slug }: { lang: Lang; slug: string }) {
   const service = getService(lang, slug);
   if (!service) notFound();
   const t = dict[lang].servicePage;
   const others = liveServices(lang).filter((s) => s.slug !== service.slug);
+  const seo = serviceSeo(lang, service.slug);
+  const url = new URL(localePath(lang, `/services/${service.slug}`), siteUrl).toString();
+  const de = lang === "de";
+
+  const serviceLd = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: seo?.seoTitle ?? service.title,
+    serviceType: service.title,
+    description: seo?.seoDescription ?? service.short,
+    url,
+    inLanguage: lang,
+    provider: { "@type": "Organization", name: site.name, url: siteUrl.toString() },
+    areaServed: "Worldwide",
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: service.title,
+      itemListElement: service.includes.map((x) => ({ "@type": "Offer", itemOffered: { "@type": "Service", name: x } })),
+    },
+  };
+  const faqLd = seo?.faqs.length
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        inLanguage: lang,
+        mainEntity: seo.faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+      }
+    : null;
 
   return (
     <>
+      <JsonLd data={serviceLd} />
+      {faqLd && <JsonLd data={faqLd} />}
+      <JsonLd
+        data={breadcrumbs(lang, [
+          { name: de ? "Startseite" : "Home", path: "/" },
+          { name: de ? "Leistungen" : "Services", path: "/services" },
+          { name: service.title, path: `/services/${service.slug}` },
+        ])}
+      />
       <PageHero eyebrow={dict[lang].servicesPage.eyebrow} title={service.title.toLowerCase()} intro={service.intro} />
 
       <section data-theme="light" className="bg-white py-24 sm:py-32">
@@ -84,6 +140,33 @@ export function ServiceView({ lang, slug }: { lang: Lang; slug: string }) {
           </aside>
         </Container>
       </section>
+
+      {seo && seo.faqs.length > 0 && (
+        <section data-theme="light" className="border-t border-ink/10 bg-white py-20 sm:py-24">
+          <Container className="grid gap-10 md:grid-cols-[0.8fr_1.2fr] md:gap-20">
+            <div>
+              <Eyebrow>faq</Eyebrow>
+              <h2 className="mt-6 font-display text-3xl font-semibold leading-[1.1] tracking-[-0.03em] sm:text-4xl">
+                {de ? "häufige fragen zu " : "common questions about "}
+                {service.title.toLowerCase()}
+              </h2>
+            </div>
+            <div className="border-b border-ink/10">
+              {seo.faqs.map((f) => (
+                <details key={f.q} className="group border-t border-ink/10">
+                  <summary className="flex cursor-pointer items-center justify-between gap-6 py-5 font-display text-lg font-medium">
+                    {f.q}
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-ink/15 transition-transform duration-300 group-open:rotate-45 group-open:bg-night group-open:text-white">
+                      +
+                    </span>
+                  </summary>
+                  <p className="max-w-3xl pb-6 leading-relaxed text-ink-soft">{f.a}</p>
+                </details>
+              ))}
+            </div>
+          </Container>
+        </section>
+      )}
 
       <section data-theme="light" className="border-t border-ink/10 bg-cream py-20">
         <Container>
