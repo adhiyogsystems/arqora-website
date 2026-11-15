@@ -45,6 +45,7 @@ export function Header({ lang }: { lang: Lang }) {
     { href: localePath(lang, "/work"), label: t.work },
     { href: localePath(lang, "/about"), label: t.about },
   ];
+  nav.splice(1, 0, { href: localePath(lang, "/templates"), label: t.templates });
   const [open, setOpen] = useState(false);
   const [dark, setDark] = useState(true);
   const [scrolled, setScrolled] = useState(false);

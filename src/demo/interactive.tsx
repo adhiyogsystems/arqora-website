@@ -11,8 +11,24 @@ const field =
   "mt-1.5 w-full rounded-xl border border-[color-mix(in_srgb,var(--ink)_15%,transparent)] bg-[var(--surface)] px-4 py-3 text-[15px] text-[var(--ink)] outline-none focus:border-[var(--accent)] focus:ring-4 focus:ring-[color-mix(in_srgb,var(--accent)_20%,transparent)]";
 
 /** Pick items and quantities, then send the order to the shop on WhatsApp. */
-export function OrderCart({ items, business, phone, button }: { items: Item[]; business: string; phone: string; button: string }) {
+export function OrderCart({
+  items,
+  categories,
+  business,
+  phone,
+  button,
+}: {
+  items: Item[];
+  categories?: Record<string, string>;
+  business: string;
+  phone: string;
+  button: string;
+}) {
   const [qty, setQty] = useState<Record<string, number>>({});
+  const [cat, setCat] = useState("All");
+  const cats = categories ? ["All", ...Array.from(new Set(items.map((i) => categories[i.name]).filter(Boolean)))] : [];
+  const shown = cat === "All" || !categories ? items : items.filter((i) => categories[i.name] === cat);
+  const count = Object.values(qty).reduce((a, b) => a + b, 0);
   const [customer, setCustomer] = useState("");
   const [address, setAddress] = useState("");
   const chosen = items.filter((i) => (qty[i.name] ?? 0) > 0);
@@ -31,8 +47,25 @@ export function OrderCart({ items, business, phone, button }: { items: Item[]; b
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr]">
+      <div>
+        {cats.length > 1 && (
+          <div className="-mx-4 mb-5 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:px-0">
+            {cats.map((c) => (
+              <button
+                key={c}
+                type="button"
+                onClick={() => setCat(c)}
+                className={`shrink-0 rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+                  cat === c ? "bg-[var(--ink)] text-[var(--bg)]" : "bg-[var(--surface)] text-[var(--muted)] ring-1 ring-[color-mix(in_srgb,var(--ink)_12%,transparent)]"
+                }`}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
+        )}
       <ul className="grid gap-3 sm:grid-cols-2">
-        {items.map((i) => {
+        {shown.map((i) => {
           const n = qty[i.name] ?? 0;
           return (
             <li key={i.name} className={`flex items-center justify-between gap-3 rounded-2xl border p-4 transition-colors ${n ? "border-[var(--accent)] bg-[color-mix(in_srgb,var(--accent)_6%,var(--surface))]" : "border-[color-mix(in_srgb,var(--ink)_10%,transparent)] bg-[var(--surface)]"}`}>
@@ -60,8 +93,21 @@ export function OrderCart({ items, business, phone, button }: { items: Item[]; b
           );
         })}
       </ul>
+      </div>
 
-      <div className="h-fit rounded-3xl bg-[var(--surface)] p-6 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.3)] lg:sticky lg:top-24">
+      {count > 0 && (
+        <a
+          href="#basket"
+          className="fixed inset-x-3 bottom-3 z-40 flex items-center justify-between rounded-2xl bg-[var(--accent)] px-5 py-4 font-semibold text-[var(--on-accent)] shadow-2xl lg:hidden"
+        >
+          <span>
+            {count} item{count > 1 ? "s" : ""} · ₹{total.toLocaleString("en-IN")}
+          </span>
+          <span>View basket →</span>
+        </a>
+      )}
+
+      <div id="basket" className="h-fit scroll-mt-20 rounded-3xl bg-[var(--surface)] p-6 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.3)] lg:sticky lg:top-20">
         <p className="text-sm font-semibold uppercase tracking-[0.15em] text-[var(--muted)]">Basket</p>
         {chosen.length === 0 ? (
           <p className="mt-3 text-[var(--muted)]">Tap + to add items.</p>

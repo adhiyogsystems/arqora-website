@@ -65,6 +65,7 @@ export function Footer({ lang }: { lang: Lang }) {
             {wa && (
               <li><a href={wa} target="_blank" rel="noopener noreferrer" className="text-white/85 hover:text-saffron">WhatsApp</a></li>
             )}
+            <li><Link href={localePath(lang, "/templates")} className="text-white/85 hover:text-saffron">{lang === "de" ? "Website-Vorlagen" : "Website templates"}</Link></li>
             <li><Link href={localePath(lang, "/work")} className="text-white/85 hover:text-saffron">{t.work}</Link></li>
             <li><Link href={localePath(lang, "/about")} className="text-white/85 hover:text-saffron">{t.about}</Link></li>
           </ul>

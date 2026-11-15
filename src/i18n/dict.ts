@@ -2,7 +2,7 @@ import type { Lang } from "@/i18n/config";
 
 /** Every interface string on the site, in English and German. */
 const en = {
-  nav: { services: "services", work: "work", about: "about", talk: "let's talk", menuOpen: "Open menu", menuClose: "Close menu" },
+  nav: { services: "services", templates: "templates", work: "work", about: "about", talk: "let's talk", menuOpen: "Open menu", menuClose: "Close menu" },
   switchTo: "Deutsch",
   hero: {
     line1: "tech solutions",
@@ -179,7 +179,7 @@ const en = {
 type Dict = typeof en;
 
 const de: Dict = {
-  nav: { services: "leistungen", work: "projekte", about: "über uns", talk: "kontakt", menuOpen: "Menü öffnen", menuClose: "Menü schließen" },
+  nav: { services: "leistungen", templates: "vorlagen", work: "projekte", about: "über uns", talk: "kontakt", menuOpen: "Menü öffnen", menuClose: "Menü schließen" },
   switchTo: "English",
   hero: {
     line1: "tech-lösungen",
