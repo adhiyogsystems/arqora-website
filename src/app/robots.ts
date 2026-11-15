@@ -20,9 +20,12 @@ const aiCrawlers = [
   "Bingbot",
 ];
 
+/** Sales demos and client tools: never indexed. */
+const privatePaths = ["/demo", "/r", "/reviews"];
+
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: [{ userAgent: "*", allow: "/", disallow: "/demo" }, ...aiCrawlers.map((userAgent) => ({ userAgent, allow: "/", disallow: "/demo" }))],
+    rules: [{ userAgent: "*", allow: "/", disallow: privatePaths }, ...aiCrawlers.map((userAgent) => ({ userAgent, allow: "/", disallow: privatePaths }))],
     sitemap: new URL("/sitemap.xml", siteUrl).toString(),
     host: siteUrl.host,
   };

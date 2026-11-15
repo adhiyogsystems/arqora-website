@@ -25,6 +25,78 @@ export type Look = {
   courseTimes?: Record<string, string>;
 };
 
+/** The Growth Kit pitched at the bottom of each demo: outcomes, not "a website". */
+export type Kit = { name: string; setup: string; monthly: string; promise: string; items: string[] };
+
+const restaurantKit: Kit = {
+  name: "Restaurant Growth Kit",
+  setup: "₹9,999",
+  monthly: "₹1,499",
+  promise: "Keep the commission you pay delivery apps on your regular customers.",
+  items: ["Direct WhatsApp ordering, no commission", "Monthly offers to your customers on WhatsApp", "Google review engine: more stars, more new customers", "Digital loyalty card"],
+};
+
+export const kits: Record<string, Kit> = {
+  salon: {
+    name: "Salon Growth Kit",
+    setup: "₹4,999",
+    monthly: "₹999",
+    promise: "Customers come back on time, and new ones find you through reviews.",
+    items: ["Online booking with reminders", "“Due for your next visit” WhatsApp reminders", "Google review engine", "Monthly offers and loyalty card"],
+  },
+  coaching: {
+    name: "Coaching Growth Kit",
+    setup: "₹9,999",
+    monthly: "₹1,499",
+    promise: "More admissions, fees on time, parents kept informed.",
+    items: ["Admission enquiries straight to WhatsApp", "Fee reminders with UPI payment link", "Parent progress updates on WhatsApp", "Referral system and Google review engine"],
+  },
+  school: {
+    name: "School Growth Kit",
+    setup: "₹9,999",
+    monthly: "₹1,499",
+    promise: "More admissions, fees on time, parents kept informed.",
+    items: ["Admission enquiries straight to WhatsApp", "Fee reminders with UPI payment link", "Notices and updates to parents on WhatsApp", "Google review engine"],
+  },
+  supermarket: {
+    name: "Shop Growth Kit",
+    setup: "₹4,999",
+    monthly: "₹799",
+    promise: "Your regulars order on WhatsApp, and your offers reach them every month.",
+    items: ["WhatsApp ordering page for your products", "Monthly offers to opted-in customers", "Google review engine", "Missed-call ordering (coming soon)"],
+  },
+  bookshop: {
+    name: "Shop Growth Kit",
+    setup: "₹4,999",
+    monthly: "₹799",
+    promise: "Parents reserve on WhatsApp instead of queuing in the school rush.",
+    items: ["WhatsApp reservation page for book sets", "Season offers to opted-in customers", "Google review engine", "Missed-call ordering (coming soon)"],
+  },
+  clinic: {
+    name: "Clinic Growth Kit",
+    setup: "₹9,999",
+    monthly: "₹1,999",
+    promise: "Fewer missed appointments, more patients finding you on Google.",
+    items: ["Appointment booking with WhatsApp reminders", "Google review engine", "Auto-replies for timings, fees and location", "Marathi/Hindi WhatsApp receptionist (coming soon)"],
+  },
+  gym: {
+    name: "Gym Growth Kit",
+    setup: "₹4,999",
+    monthly: "₹999",
+    promise: "More trials, on-time renewals, members who stay.",
+    items: ["Free-trial booking", "Renewal reminders with UPI payment link", "Google review engine", "Diet & workout plans add-on"],
+  },
+  restaurant: restaurantKit,
+  bakery: { ...restaurantKit, name: "Bakery Growth Kit", setup: "₹4,999", monthly: "₹999", items: ["Direct WhatsApp orders and custom-cake requests", "Birthday and festival offers on WhatsApp", "Google review engine", "Digital loyalty card"] },
+  hotel: {
+    name: "Hotel Growth Kit",
+    setup: "₹9,999",
+    monthly: "₹1,499",
+    promise: "Direct bookings without paying booking sites.",
+    items: ["Direct booking requests on WhatsApp", "Checkout review request to every guest", "Offers to past guests for festivals and seasons", "Google review engine"],
+  },
+};
+
 export const img = (id: string, w = 1200) => `https://images.unsplash.com/photo-${id}?w=${w}&q=75&auto=format&fit=crop`;
 
 export const looks: Record<string, Look> = {

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Inter, Sora } from "next/font/google";
+import { Fraunces, Inter, Noto_Sans_Devanagari, Sora } from "next/font/google";
 
 import { siteUrl } from "@/lib/site";
 import "@/app/globals.css";
@@ -7,8 +7,9 @@ import "@/app/globals.css";
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 const sora = Sora({ variable: "--font-sora", subsets: ["latin"] });
 const fraunces = Fraunces({ variable: "--font-fraunces", subsets: ["latin"] });
+const deva = Noto_Sans_Devanagari({ variable: "--font-deva", subsets: ["devanagari"], weight: ["400", "600", "700"] });
 
-/** Sales demos: personalised sample sites. Never indexed by search engines. */
+/** Sales demos and client tools (review pages, posters). Never indexed by search engines. */
 export const metadata: Metadata = {
   metadataBase: siteUrl,
   title: { default: "Sample website by Arqora", template: "%s · sample by Arqora" },
@@ -19,7 +20,7 @@ export const viewport: Viewport = { themeColor: "#090c18" };
 
 export default function DemoLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${sora.variable} ${fraunces.variable} antialiased`}>
+    <html lang="en" className={`${inter.variable} ${sora.variable} ${fraunces.variable} ${deva.variable} antialiased`}>
       <body className="font-sans">{children}</body>
     </html>
   );

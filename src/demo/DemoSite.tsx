@@ -22,7 +22,7 @@ import Link from "next/link";
 import QRCode from "qrcode";
 
 import { OrderCart, RequestForm } from "@/demo/interactive";
-import { img, looks } from "@/demo/looks";
+import { img, kits, looks } from "@/demo/looks";
 import type { IconName, Niche } from "@/demo/niches";
 import { site } from "@/lib/site";
 
@@ -59,6 +59,7 @@ const place = (p: Prospect) => [p.area, p.city !== "your city" ? p.city : ""].fi
 
 export async function DemoSite({ niche, prospect }: { niche: Niche; prospect: Prospect }) {
   const look = looks[niche.slug];
+  const kit = kits[niche.slug];
   const Icon = icons[niche.icon];
   const c = niche.colors;
   const sendTo = prospect.phone.length >= 11 ? prospect.phone : site.whatsapp;
@@ -596,16 +597,34 @@ export async function DemoSite({ niche, prospect }: { niche: Niche; prospect: Pr
       </footer>
 
       {/* Arqora offer */}
-      <section className="bg-[#090c18] px-4 py-16 pb-28 text-center text-white sm:px-6 lg:pb-16">
-        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#a6adc4]">{prospect.personalised ? `for ${prospect.name}` : "for your business"}</p>
-        <h2 className="mx-auto mt-4 max-w-2xl font-display text-3xl font-semibold tracking-[-0.02em] sm:text-5xl">Make this website yours.</h2>
-        <p className="mx-auto mt-4 max-w-xl text-[#a6adc4]">
-          Your photos, your prices, your domain, plus monthly WhatsApp offers to your customers. Live within a week, from{" "}
-          <strong className="text-white">{niche.price}</strong>.
-        </p>
-        <a href={makeItYours} target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-7 py-4 font-semibold text-[#090c18]">
-          <MessageCircle size={18} /> Talk to Arqora on WhatsApp
-        </a>
+      <section className="bg-[#090c18] px-4 py-16 pb-28 text-white sm:px-6 lg:pb-16">
+        <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.1fr_1fr]">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#a6adc4]">
+              {kit.name} · {prospect.personalised ? `for ${prospect.name}` : "by Arqora"}
+            </p>
+            <h2 className="mt-4 font-display text-3xl font-semibold leading-[1.1] tracking-[-0.02em] sm:text-5xl">{kit.promise}</h2>
+            <p className="mt-5 text-[#a6adc4]">
+              This website is just the start. The kit brings customers back, brings new ones in, and takes busywork off your hands.
+            </p>
+            <a href={makeItYours} target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-7 py-4 font-semibold text-[#090c18]">
+              <MessageCircle size={18} /> Talk to Arqora on WhatsApp
+            </a>
+          </div>
+          <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-7">
+            <ul className="space-y-3">
+              {kit.items.map((x) => (
+                <li key={x} className="flex gap-3">
+                  <Check size={18} className="mt-0.5 shrink-0 text-[#f0a04b]" /> {x}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-7 border-t border-white/10 pt-5 text-[#a6adc4]">
+              <strong className="text-2xl text-white">{kit.monthly}</strong> / month · setup {kit.setup}
+              <span className="mt-1 block text-sm">Includes this website, hosting and support.</span>
+            </p>
+          </div>
+        </div>
       </section>
     </div>
   );
