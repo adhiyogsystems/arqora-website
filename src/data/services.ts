@@ -15,6 +15,7 @@ const live: Record<string, boolean> = {
   apps: true,
   "crm-software": true,
   "data-automation": true,
+  "ai-automation": true,
   "government-projects": true,
 };
 
@@ -80,6 +81,22 @@ const en: Service[] = [
       "AI chatbots for websites and WhatsApp",
     ],
     goodFor: ["Owners who want numbers at a glance", "Teams drowning in spreadsheets", "Research and data projects"],
+  },
+  {
+    slug: "ai-automation",
+    title: "AI Automation & Chatbots",
+    short: "AI agents, WhatsApp chatbots and automated workflows that save hours every week.",
+    intro:
+      "We find the repetitive work in your business and hand it to software: AI chatbots that answer customers on WhatsApp and your website, agents that read documents and emails, and workflows that connect your tools and run on their own.",
+    includes: [
+      "AI chatbots for WhatsApp and websites, trained on your content",
+      "Lead capture, follow-up and appointment booking on autopilot",
+      "Document and email processing with AI (invoices, forms, enquiries)",
+      "Workflow automation with n8n, APIs and your existing tools",
+      "AI Automation Sprint: 2–3 workflows live in two weeks",
+      "Monitoring and monthly improvements",
+    ],
+    goodFor: ["Clinics and service businesses", "Sales and support teams", "E-commerce and retail", "Agencies"],
   },
   {
     slug: "government-projects",
@@ -162,6 +179,22 @@ const de: Service[] = [
     goodFor: ["Inhaber, die Zahlen auf einen Blick wollen", "Teams mit zu vielen Tabellen", "Forschungs- und Datenprojekte"],
   },
   {
+    slug: "ai-automation",
+    title: "KI-Automatisierung & Chatbots",
+    short: "KI-Agenten, WhatsApp-Chatbots und automatisierte Abläufe, die jede Woche Stunden sparen.",
+    intro:
+      "Wir finden die wiederkehrende Arbeit in Ihrem Unternehmen und übergeben sie an Software: KI-Chatbots, die Kunden auf WhatsApp und Ihrer Website antworten, Agenten, die Dokumente und E-Mails verarbeiten, und Workflows, die Ihre Werkzeuge verbinden und von selbst laufen.",
+    includes: [
+      "KI-Chatbots für WhatsApp und Websites, trainiert mit Ihren Inhalten",
+      "Lead-Erfassung, Nachfassen und Terminbuchung automatisch",
+      "Dokumenten- und E-Mail-Verarbeitung mit KI (Rechnungen, Formulare, Anfragen)",
+      "Workflow-Automatisierung mit n8n, APIs und Ihren bestehenden Werkzeugen",
+      "KI-Automatisierungs-Sprint: 2–3 Workflows in zwei Wochen live",
+      "Überwachung und monatliche Verbesserungen",
+    ],
+    goodFor: ["Praxen und Dienstleister", "Vertriebs- und Supportteams", "E-Commerce und Handel", "Agenturen"],
+  },
+  {
     slug: "government-projects",
     title: "Projekte für Behörden & Institutionen",
     short: "Portale, Digitalisierung und öffentliche Aufträge, mit erfahrenen Partnern.",
@@ -225,6 +258,16 @@ const seo: Record<Lang, Record<string, ServiceSeo>> = {
         { q: "Do you build AI chatbots?", a: "Yes: chatbots for your website or WhatsApp that answer common questions from your own content and hand over to your team when needed." },
       ],
     },
+    "ai-automation": {
+      seoTitle: "AI Automation Agency: WhatsApp Chatbots, AI Agents & n8n Workflows",
+      seoDescription:
+        "AI chatbots for WhatsApp and websites, AI agents for documents and emails, and n8n workflow automation for small and mid-sized businesses. Fixed-price AI Automation Sprints.",
+      faqs: [
+        { q: "What can AI automation do for a small business?", a: "Answer customer questions 24/7, capture and follow up leads, book appointments, read invoices and forms, and move data between your tools. Most businesses start with the one task that takes the most staff time." },
+        { q: "What is an AI Automation Sprint?", a: "A fixed-price, two-week project: we pick 2–3 high-value workflows with you, build and test them, and hand them over with monitoring. You see results in days, not months." },
+        { q: "Do you use n8n, Zapier or custom code?", a: "Whatever fits. We often use n8n because it is flexible and can run on your own server, and we write custom code where reliability or cost matters." },
+      ],
+    },
     "government-projects": {
       seoTitle: "Government & Public Sector Software Development",
       seoDescription:
@@ -275,6 +318,16 @@ const seo: Record<Lang, Record<string, ServiceSeo>> = {
         { q: "Können Sie aus unseren Excel-Tabellen ein Dashboard machen?", a: "Ja. Wir bereinigen und strukturieren Ihre Tabellen, verbinden sie mit einer Datenbank oder Google Sheets und bauen Live-Dashboards, die sich automatisch aktualisieren." },
         { q: "Was lässt sich automatisieren?", a: "Wiederkehrende Berichte, Erinnerungen, Nachfassaktionen, WhatsApp- und E-Mail-Nachrichten, Datenübertragung zwischen Werkzeugen und einfache Freigaben." },
         { q: "Entwickeln Sie KI-Chatbots?", a: "Ja: Chatbots für Ihre Website oder WhatsApp, die häufige Fragen aus Ihren eigenen Inhalten beantworten und bei Bedarf an Ihr Team übergeben." },
+      ],
+    },
+    "ai-automation": {
+      seoTitle: "KI-Automatisierung: WhatsApp-Chatbots, KI-Agenten & n8n-Workflows",
+      seoDescription:
+        "KI-Chatbots für WhatsApp und Websites, KI-Agenten für Dokumente und E-Mails sowie n8n-Workflow-Automatisierung für KMU. KI-Automatisierungs-Sprints zum Festpreis.",
+      faqs: [
+        { q: "Was kann KI-Automatisierung für ein kleines Unternehmen leisten?", a: "Kundenfragen rund um die Uhr beantworten, Leads erfassen und nachfassen, Termine buchen, Rechnungen und Formulare auslesen und Daten zwischen Ihren Werkzeugen übertragen. Die meisten starten mit der Aufgabe, die am meisten Arbeitszeit kostet." },
+        { q: "Was ist ein KI-Automatisierungs-Sprint?", a: "Ein zweiwöchiges Projekt zum Festpreis: Wir wählen mit Ihnen 2–3 wertvolle Workflows aus, bauen und testen sie und übergeben sie mit Überwachung. Ergebnisse sehen Sie in Tagen, nicht Monaten." },
+        { q: "Nutzen Sie n8n, Zapier oder eigenen Code?", a: "Was am besten passt. Oft setzen wir n8n ein, weil es flexibel ist und auf Ihrem eigenen Server laufen kann, und schreiben eigenen Code, wo Zuverlässigkeit oder Kosten es erfordern." },
       ],
     },
     "government-projects": {

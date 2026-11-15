@@ -22,7 +22,7 @@ const aiCrawlers = [
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: [{ userAgent: "*", allow: "/" }, ...aiCrawlers.map((userAgent) => ({ userAgent, allow: "/" }))],
+    rules: [{ userAgent: "*", allow: "/", disallow: "/demo" }, ...aiCrawlers.map((userAgent) => ({ userAgent, allow: "/", disallow: "/demo" }))],
     sitemap: new URL("/sitemap.xml", siteUrl).toString(),
     host: siteUrl.host,
   };

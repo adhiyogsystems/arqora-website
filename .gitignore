@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Private business documents (pricing, sales scripts, CRM): never publish
+/docs/private/
