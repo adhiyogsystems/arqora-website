@@ -2,10 +2,10 @@ import { faqs } from "@/data/faq";
 import type { Lang } from "@/i18n/config";
 
 /** Native <details> accordion: works without JavaScript and is readable by search engines. */
-export function Faq({ lang }: { lang: Lang }) {
+export function Faq({ lang = "en", items }: { lang?: Lang; items?: { q: string; a: string }[] }) {
   return (
     <div className="border-b border-ink/10">
-      {faqs[lang].map((f, i) => (
+      {(items ?? faqs[lang]).map((f, i) => (
         <details key={f.q} data-reveal style={{ "--d": `${i * 40}ms` } as React.CSSProperties} className="group border-t border-ink/10">
           <summary className="flex cursor-pointer items-center justify-between gap-6 py-6 font-display text-lg font-medium sm:text-xl">
             {f.q}

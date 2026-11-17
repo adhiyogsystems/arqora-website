@@ -22,6 +22,7 @@ import {
 import Link from "next/link";
 import QRCode from "qrcode";
 
+import { PayBox, rupees } from "@/components/PayBox";
 import { OrderCart, RequestForm } from "@/demo/interactive";
 import { defaultMonthly, defaultPrice, intlPhone, type Lead } from "@/demo/lead";
 import { img, kits, looks, sampleReviews } from "@/demo/looks";
@@ -703,6 +704,10 @@ export async function DemoSite({ niche, prospect }: { niche: Niche; prospect: Pr
                   <Sparkles size={18} /> Customise it for me
                 </a>
               </div>
+              <div className="mt-10 border-t border-white/10 pt-8">
+                <p className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-[#a6adc4]">Happy with it? Pay and we go live</p>
+                <PayBox amount={rupees(price)} note={`Website for ${prospect.name}`.slice(0, 50)} dark />
+              </div>
             </div>
             <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-7">
               <p className="font-display">
@@ -725,8 +730,7 @@ export async function DemoSite({ niche, prospect }: { niche: Niche; prospect: Pr
               <p className="mt-6 border-t border-white/10 pt-5 text-sm text-[#a6adc4]">
                 Then <strong className="text-white">{monthly}/month</strong> for hosting, updates and the Google review kit.
               </p>
-              <p className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#a6adc4]">Add-ons</p>
-              <p className="mt-2 text-sm text-[#a6adc4]">Your own .com domain · WhatsApp offers to customers · extra pages · {kit.name}</p>
+              <p className="mt-4 text-sm text-[#a6adc4]">Up to 8 pages, no per-page charges. Optional: your own .com domain (at cost) · {kit.name}</p>
             </div>
           </div>
         </section>

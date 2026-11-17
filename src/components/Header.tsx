@@ -46,6 +46,8 @@ export function Header({ lang }: { lang: Lang }) {
     { href: localePath(lang, "/about"), label: t.about },
   ];
   nav.splice(1, 0, { href: localePath(lang, "/templates"), label: t.templates });
+  // Pricing is in rupees, for Indian businesses, so it exists in English only.
+  if (lang === "en") nav.splice(2, 0, { href: "/pricing", label: "pricing" });
   const [open, setOpen] = useState(false);
   const [dark, setDark] = useState(true);
   const [scrolled, setScrolled] = useState(false);

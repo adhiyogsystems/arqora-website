@@ -28,6 +28,18 @@ export const site = {
   email: "adhiyogsystems@gmail.com",
 } as const;
 
+/**
+ * How clients pay. Fill in what you have; empty values are hidden.
+ * - upi: your UPI ID, e.g. "adhiyogsystems@okaxis" (shows a QR and a pay button)
+ * - upiName: the name shown in the payer's UPI app
+ * - razorpay: a Razorpay payment page link for cards/netbanking, e.g. "https://rzp.io/l/arqora"
+ */
+export const payments = {
+  upi: "",
+  upiName: "Adhiyog Systems",
+  razorpay: "",
+};
+
 export const siteText: Record<Lang, { tagline: string; description: string; location: string; seoTitle: string; seoDescription: string }> = {
   en: {
     tagline: "Tech solutions for every business.",
