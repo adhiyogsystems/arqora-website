@@ -143,7 +143,18 @@ export function resolvePitch(pitch: Pitch, niche: string): Exclude<Pitch, "auto"
 
 type MsgInput = { name: string; link: string; price: string; feature: FeatureType; sender: string; niche: string; pitch?: Pitch };
 
+/** Every message ends with an easy opt-out (WhatsApp and email alike). */
+const stopLine: Record<MsgLang, string> = {
+  en: "Not interested? Reply STOP and we won't message again.",
+  hi: "रुचि नहीं है? STOP लिखें, हम दोबारा मैसेज नहीं करेंगे।",
+  mr: "रस नसेल तर STOP लिहा, आम्ही पुन्हा मेसेज करणार नाही.",
+};
+
 export function outreachMessage(lang: MsgLang, o: MsgInput) {
+  return `${messageBody(lang, o)}\n\n${stopLine[lang]}`;
+}
+
+function messageBody(lang: MsgLang, o: MsgInput) {
   const f = featureWord[lang][o.feature];
   const pitch = resolvePitch(o.pitch ?? "standard", o.niche);
   const stay = o.niche === "hotel";
@@ -186,11 +197,9 @@ export function emailSubject(lang: MsgLang, name: string) {
   return `We made a website for ${name}`;
 }
 
-/** Email adds the sender's identity and an easy opt-out (required for cold email in the US/UK). */
-export function emailFooter(lang: MsgLang) {
-  if (lang === "hi") return `\n\nArqora Technology Solutions (Adhiyog Systems), India\nआगे ईमेल नहीं चाहिए? बस "NO" लिखकर जवाब दें।`;
-  if (lang === "mr") return `\n\nArqora Technology Solutions (Adhiyog Systems), India\nपुढे ईमेल नको असतील तर फक्त "NO" लिहून उत्तर द्या.`;
-  return `\n\nArqora Technology Solutions (Adhiyog Systems), India\nNot interested? Just reply "no" and we won't email again.`;
+/** Email adds the sender's identity (the opt-out line is already in every message). */
+export function emailFooter() {
+  return `\n\nArqora Technology Solutions (Adhiyog Systems), India`;
 }
 
 export function toCsv(rows: string[][]) {

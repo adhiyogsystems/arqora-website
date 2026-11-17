@@ -89,5 +89,34 @@ export function leadPath(lead: Partial<Lead>) {
   return `/p/${slugify(lead.name ?? "", lead.city ?? "")}/${encodeLead(lead)}`;
 }
 
+/**
+ * Leads found through the Google Places API: Google's terms only allow
+ * keeping the place ID, so the link holds the place ID (plus our own
+ * choices: industry, the city we searched, price) and the preview page
+ * looks up the business name and address live when it is opened.
+ */
+export type PlaceRef = { niche: string; placeId: string; city: string; price: string; monthly: string };
+
+const placeIdPattern = /^[A-Za-z0-9_-]{10,300}$/;
+
+export function placePath(ref: PlaceRef) {
+  const price = ref.price === defaultPrice ? "" : ref.price.slice(0, 20);
+  const monthly = ref.monthly === defaultMonthly ? "" : ref.monthly.slice(0, 20);
+  const arr = ["3", ref.niche, ref.placeId, ref.city.slice(0, 40), price, monthly].map((s) => s.replaceAll(SEP, " "));
+  while (arr.length && !arr[arr.length - 1]) arr.pop();
+  return `/p/${slugify(ref.niche, ref.city)}/${toBase64Url(arr.join(SEP))}`;
+}
+
+export function decodePlace(code: string): PlaceRef | null {
+  if (!/^[A-Za-z0-9_-]{4,1200}$/.test(code)) return null;
+  try {
+    const [v, niche = "", placeId = "", city = "", price = "", monthly = ""] = fromBase64Url(code).split(SEP);
+    if (v !== "3" || !niche || !placeIdPattern.test(placeId)) return null;
+    return { niche: niche.slice(0, 20), placeId, city: city.slice(0, 40), price: price || defaultPrice, monthly: monthly || defaultMonthly };
+  } catch {
+    return null;
+  }
+}
+
 /** Indian 10-digit numbers get the 91 prefix; anything else is used as given. */
 export const intlPhone = (digits: string) => (digits.length === 10 ? `91${digits}` : digits);

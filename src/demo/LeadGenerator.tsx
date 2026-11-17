@@ -3,7 +3,7 @@
 import { AlertTriangle, Check, Copy, Download, ExternalLink, Globe, Loader2, Mail, MapPin, MessageCircle, Search, Star, Stethoscope } from "lucide-react";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 
-import { defaultMonthly, defaultPrice, intlPhone, leadPath } from "@/demo/lead";
+import { defaultMonthly, defaultPrice, intlPhone, leadPath, placePath } from "@/demo/lead";
 import {
   doctorGroupPost,
   emailFooter,
@@ -22,7 +22,7 @@ import {
 } from "@/demo/outreach";
 
 type NicheOption = { slug: string; label: string; type: "booking" | "order" | "enquiry" };
-type Found = RawLead & { maps?: string };
+type Found = RawLead & { maps?: string; placeId?: string };
 
 const input = "mt-1.5 w-full rounded-xl border border-ink/15 bg-white px-4 py-3 text-[15px] outline-none focus:border-night focus:ring-4 focus:ring-iris/20";
 const pwKey = "arqora-team-password";
@@ -37,7 +37,7 @@ const notOwnSite = /facebook\.|instagram\.|wa\.me|whatsapp\.|justdial\.|linktr\.
 const ownSite = (url: string) => Boolean(url) && !notOwnSite.test(url);
 /** Indian mobiles (WhatsApp-able) are 91 + 10 digits starting 6–9. Other countries: assume yes. */
 const whatsappable = (phone: string) => (phone.startsWith("91") ? /^91[6-9]\d{9}$/.test(phone) : phone.length >= 10);
-const keyOf = (l: RawLead) => `${l.name}|${l.address}`.toLowerCase();
+const keyOf = (l: Found) => l.placeId || `${l.name}|${l.address}`.toLowerCase();
 
 function readPw() {
   try {
@@ -184,7 +184,11 @@ export function LeadGenerator({ niches }: { niches: NicheOption[] }) {
         const niche = overrides[key] ?? guessed ?? fallback;
         const meta = niches.find((n) => n.slug === niche) ?? niches[0];
         const city = l.city || defaultCity;
-        const link = `${origin}${leadPath({ niche, name: l.name, city, phone: l.phone, address: l.address, hours: l.hours, rating: l.rating, reviews: l.reviews, price, monthly })}`;
+        // Google results: the link holds only the place ID (Google's terms); pasted lists carry their details.
+        const path = l.placeId
+          ? placePath({ niche, placeId: l.placeId, city, price, monthly })
+          : leadPath({ niche, name: l.name, city, phone: l.phone, address: l.address, hours: l.hours, rating: l.rating, reviews: l.reviews, price, monthly });
+        const link = `${origin}${path}`;
         const usedPitch = resolvePitch(pitch, niche);
         const message = outreachMessage(lang, { name: l.name, link, price, feature: meta.type, sender, niche, pitch });
         const phone = intlPhone(l.phone.replace(/\D/g, ""));
@@ -197,10 +201,13 @@ export function LeadGenerator({ niches }: { niches: NicheOption[] }) {
   const shown = rows.filter((r) => (!onlyNoSite || !r.site) && (!onlyWhatsapp || r.wa));
   const pendingEmails = new Set(leads.filter((l) => !l.email && ownSite(l.website) && emails[l.website] === undefined).map((l) => l.website)).size;
 
+  /** Google's terms don't allow exporting Places data, so only pasted leads go into the CSV. */
+  const exportable = shown.filter((r) => !r.l.placeId);
+
   function download() {
     const out = [
       ["name", "niche", "pitch", "city", "phone", "whatsapp_ok", "email", "website", "rating", "reviews", "preview_link", "email_subject", "email_body", "whatsapp_message"],
-      ...shown.map((r) => [
+      ...exportable.map((r) => [
         r.l.name,
         r.niche,
         r.usedPitch,
@@ -213,7 +220,7 @@ export function LeadGenerator({ niches }: { niches: NicheOption[] }) {
         r.l.reviews,
         r.link,
         emailSubject(lang, r.l.name),
-        r.message + emailFooter(lang),
+        r.message + emailFooter(),
         r.message,
       ]),
     ];
@@ -267,7 +274,7 @@ export function LeadGenerator({ niches }: { niches: NicheOption[] }) {
           </button>
         </form>
         <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-mute">
-          {found.length > 0 && <span>{found.length} businesses from Google</span>}
+          {found.length > 0 && <span>{found.length} businesses · results from Google Maps (shown here only, not saved)</span>}
           {nextToken && (
             <button type="button" onClick={() => search(true)} disabled={searching} className="rounded-lg border border-white/20 px-3 py-1.5 font-semibold text-white">
               Load 20 more
@@ -371,11 +378,18 @@ export function LeadGenerator({ niches }: { niches: NicheOption[] }) {
                 <input type="checkbox" checked={onlyWhatsapp} onChange={(e) => setOnlyWhatsapp(e.target.checked)} className="h-4 w-4" />
                 Mobile numbers only
               </label>
-              <CopyButton text={shown.map((r) => `${r.l.name}\t${r.link}`).join("\n")} label="Copy all links" />
-              <button type="button" onClick={download} className="inline-flex items-center gap-2 rounded-xl bg-night px-4 py-2.5 text-sm font-semibold text-white">
-                <Download size={16} /> Download CSV
-              </button>
+              <CopyButton text={shown.map((r) => r.link).join("\n")} label="Copy all links" />
+              {exportable.length > 0 && (
+                <button type="button" onClick={download} className="inline-flex items-center gap-2 rounded-xl bg-night px-4 py-2.5 text-sm font-semibold text-white">
+                  <Download size={16} /> Download CSV ({exportable.length})
+                </button>
+              )}
             </div>
+            {exportable.length < shown.length && (
+              <p className="w-full text-xs text-ink-soft">
+                Google results can&apos;t be exported (Google&apos;s terms). Send them from this screen with the WhatsApp and Email buttons. Pasted lists can be downloaded.
+              </p>
+            )}
           </div>
 
           <div className="mt-5 grid gap-3">
@@ -431,7 +445,7 @@ export function LeadGenerator({ niches }: { niches: NicheOption[] }) {
                   )}
                   {r.email && (
                     <a
-                      href={`mailto:${r.email}?subject=${encodeURIComponent(emailSubject(lang, r.l.name))}&body=${encodeURIComponent(r.message + emailFooter(lang))}`}
+                      href={`mailto:${r.email}?subject=${encodeURIComponent(emailSubject(lang, r.l.name))}&body=${encodeURIComponent(r.message + emailFooter())}`}
                       className="inline-flex items-center gap-1.5 rounded-lg border border-ink/15 px-2.5 py-1.5 text-xs font-semibold"
                     >
                       <Mail size={14} /> Email

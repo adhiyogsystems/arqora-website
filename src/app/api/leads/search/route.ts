@@ -6,6 +6,7 @@ import { checkTeamPassword } from "@/lib/leadsAuth";
  */
 
 const fieldMask = [
+  "places.id",
   "places.displayName",
   "places.formattedAddress",
   "places.shortFormattedAddress",
@@ -21,6 +22,7 @@ const fieldMask = [
 ].join(",");
 
 type Place = {
+  id?: string;
   displayName?: { text?: string };
   formattedAddress?: string;
   shortFormattedAddress?: string;
@@ -66,6 +68,7 @@ export async function POST(req: Request) {
   const places = (data.places ?? [])
     .filter((p) => !p.businessStatus || p.businessStatus === "OPERATIONAL")
     .map((p) => ({
+      placeId: p.id ?? "",
       name: p.displayName?.text ?? "",
       category: p.primaryTypeDisplayName?.text ?? what,
       city: where,

@@ -54,6 +54,8 @@ export type Prospect = {
   monthly?: string;
   /** Full URL of this preview, quoted in the claim message. */
   url?: string;
+  /** Name and address come live from Google Maps (attribution shown). */
+  googleData?: boolean;
 };
 
 /** Turns "?n=&c=&p=&a=" into a clean prospect, falling back to the niche's sample business. */
@@ -573,7 +575,8 @@ export async function DemoSite({ niche, prospect }: { niche: Niche; prospect: Pr
               <h2 className={display(`text-3xl font-semibold sm:text-5xl ${upper}`)}>{niche.feature.title}</h2>
               <p className="mt-4 text-[var(--muted)]">{niche.feature.text}</p>
               <p className="mt-6 flex items-center gap-2 text-sm text-[var(--muted)]">
-                <MessageCircle size={16} className="text-[#25d366]" /> Arrives instantly on {prospect.name}&apos;s WhatsApp
+                <MessageCircle size={16} className="text-[#25d366]" />{" "}
+                {prospect.phone.length >= 11 ? <>Arrives instantly on {prospect.name}&apos;s WhatsApp</> : <>On the live site, this arrives instantly on your WhatsApp</>}
               </p>
             </div>
             <RequestForm feature={niche.feature} options={options} business={prospect.name} phone={sendTo} />
@@ -675,7 +678,10 @@ export async function DemoSite({ niche, prospect }: { niche: Niche; prospect: Pr
       </section>
 
       <footer className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-8 text-sm text-[var(--muted)] sm:flex-row sm:justify-between sm:px-6">
-        <span>© {new Date().getFullYear()} {prospect.name}. Sample prices and content. Photos: Unsplash.</span>
+        <span>
+          © {new Date().getFullYear()} {prospect.name}. Sample prices and content. Photos: Unsplash.
+          {prospect.googleData && " Business name and address: Google Maps."}
+        </span>
         <Link href="/" className="hover:text-[var(--ink)]">Website by {site.name}</Link>
       </footer>
 
