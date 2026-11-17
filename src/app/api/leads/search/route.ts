@@ -62,8 +62,15 @@ export async function POST(req: Request) {
     body: JSON.stringify({ textQuery: `${what} in ${where}`, pageSize: 20, languageCode: "en", ...(body.pageToken ? { pageToken: String(body.pageToken) } : {}) }),
     cache: "no-store",
   });
-  const data = (await res.json().catch(() => ({}))) as { places?: Place[]; nextPageToken?: string; error?: { message?: string } };
-  if (!res.ok) return Response.json({ error: `Google: ${data.error?.message ?? res.statusText}` }, { status: 502 });
+  type GoogleError = { message?: string; status?: string; details?: { reason?: string; metadata?: Record<string, string> }[] };
+  const data = (await res.json().catch(() => ({}))) as { places?: Place[]; nextPageToken?: string; error?: GoogleError };
+  if (!res.ok) {
+    // Show Google's reason and project number so setup problems are easy to fix.
+    const info = data.error?.details?.find((d) => d.reason);
+    const project = info?.metadata?.consumer ?? info?.metadata?.containerInfo ?? "";
+    const extra = [info?.reason, project && `project ${project.replace("projects/", "")}`].filter(Boolean).join(", ");
+    return Response.json({ error: `Google: ${data.error?.message ?? res.statusText}${extra ? ` (${extra})` : ""}` }, { status: 502 });
+  }
 
   const places = (data.places ?? [])
     .filter((p) => !p.businessStatus || p.businessStatus === "OPERATIONAL")
