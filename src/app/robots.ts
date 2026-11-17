@@ -21,7 +21,7 @@ const aiCrawlers = [
 ];
 
 /** Sales demos and client tools: never indexed. */
-const privatePaths = ["/demo", "/p/", "/leads", "/r", "/reviews"];
+const privatePaths = ["/demo", "/p/", "/leads", "/r", "/reviews", "/api/"];
 
 export default function robots(): MetadataRoute.Robots {
   return {
