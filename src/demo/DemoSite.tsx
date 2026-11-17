@@ -14,6 +14,7 @@ import {
   Scissors,
   ShoppingCart,
   Sparkles,
+  Star,
   Stethoscope,
   UtensilsCrossed,
   type LucideIcon,
@@ -22,7 +23,8 @@ import Link from "next/link";
 import QRCode from "qrcode";
 
 import { OrderCart, RequestForm } from "@/demo/interactive";
-import { img, kits, looks } from "@/demo/looks";
+import { defaultMonthly, defaultPrice, intlPhone, type Lead } from "@/demo/lead";
+import { img, kits, looks, sampleReviews } from "@/demo/looks";
 import type { IconName, Niche } from "@/demo/niches";
 import { site } from "@/lib/site";
 
@@ -39,7 +41,20 @@ const icons: Record<IconName, LucideIcon> = {
   CakeSlice,
 };
 
-export type Prospect = { name: string; city: string; phone: string; area: string; personalised: boolean };
+export type Prospect = {
+  name: string;
+  city: string;
+  phone: string;
+  area: string;
+  personalised: boolean;
+  hours?: string;
+  rating?: string;
+  reviews?: string;
+  price?: string;
+  monthly?: string;
+  /** Full URL of this preview, quoted in the claim message. */
+  url?: string;
+};
 
 /** Turns "?n=&c=&p=&a=" into a clean prospect, falling back to the niche's sample business. */
 export function readProspect(niche: Niche, q: Record<string, string | string[] | undefined>): Prospect {
@@ -48,9 +63,26 @@ export function readProspect(niche: Niche, q: Record<string, string | string[] |
   return {
     name: get("n") || niche.defaultName,
     city: get("c") || "your city",
-    phone: digits.length === 10 ? `91${digits}` : digits,
+    phone: intlPhone(digits),
     area: get("a"),
     personalised: Boolean(get("n")),
+  };
+}
+
+/** A prospect from a /p/… lead link. */
+export function prospectFromLead(lead: Lead, url: string): Prospect {
+  return {
+    name: lead.name,
+    city: lead.city || "your city",
+    phone: intlPhone(lead.phone),
+    area: lead.address,
+    personalised: true,
+    hours: lead.hours,
+    rating: lead.rating,
+    reviews: lead.reviews,
+    price: lead.price || defaultPrice,
+    monthly: lead.monthly || defaultMonthly,
+    url,
   };
 }
 
@@ -66,9 +98,22 @@ export async function DemoSite({ niche, prospect }: { niche: Niche; prospect: Pr
   const serif = niche.serif ? "font-[family-name:var(--font-fraunces)]" : "font-display";
   const display = (s: string) => `${serif} ${s}`;
   const upper = look.heroStyle === "bold" ? "uppercase tracking-[-0.02em]" : "";
-  const makeItYours = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
-    `Hi Arqora, I saw the ${niche.label.toLowerCase()} website${prospect.personalised ? ` made for ${prospect.name}` : " template"}. I'd like one for my business.`,
-  )}`;
+  const price = prospect.price ?? niche.price;
+  const monthly = prospect.monthly ?? defaultMonthly;
+  const hours = prospect.hours || niche.hours;
+  const wa = (text: string) => `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(text)}`;
+  const makeItYours = prospect.personalised
+    ? wa(`Hi Arqora, I want to claim the website you made for ${prospect.name}${prospect.url ? `: ${prospect.url}` : ""}`)
+    : wa(`Hi Arqora, I saw the ${niche.label.toLowerCase()} website template. I'd like one for my business.`);
+  const customise = wa(`Hi Arqora, I like the website for ${prospect.name}${prospect.url ? ` (${prospect.url})` : ""}. I'd like some changes:`);
+  const reviews = sampleReviews[niche.slug] ?? [];
+  const stars = (n: number, size = 16) => (
+    <span aria-hidden="true" className="inline-flex text-[#f5b301]">
+      {[0, 1, 2, 3, 4].map((i) => (
+        <Star key={i} size={size} fill={i < Math.round(n) ? "currentColor" : "none"} strokeWidth={i < Math.round(n) ? 0 : 1.5} />
+      ))}
+    </span>
+  );
   const optIn = `https://wa.me/${sendTo}?text=${encodeURIComponent(`Hi ${prospect.name}, please send me your offers on WhatsApp.`)}`;
   const qr = await QRCode.toString(optIn, { type: "svg", margin: 0, color: { dark: c.ink, light: "#0000" } });
   const mapQuery = encodeURIComponent([prospect.name, prospect.area, prospect.city === "your city" ? "" : prospect.city].filter(Boolean).join(", "));
@@ -124,7 +169,13 @@ export async function DemoSite({ niche, prospect }: { niche: Niche; prospect: Pr
 
   const meta = (light?: boolean) => (
     <div className={`mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm ${light ? "text-white/80" : "text-[var(--muted)]"}`}>
-      <span className="flex items-center gap-2"><Clock size={16} /> {niche.hours}</span>
+      {prospect.rating && (
+        <a href="#reviews" className="flex items-center gap-2 font-semibold">
+          {stars(Number(prospect.rating), 15)} {prospect.rating}
+          {prospect.reviews && <span className="font-normal">({prospect.reviews} Google reviews)</span>}
+        </a>
+      )}
+      <span className="flex items-center gap-2"><Clock size={16} /> {hours}</span>
       {place(prospect) && <span className="flex items-center gap-2"><MapPin size={16} /> {place(prospect)}</span>}
     </div>
   );
@@ -378,15 +429,21 @@ export async function DemoSite({ niche, prospect }: { niche: Niche; prospect: Pr
             <Sparkles size={15} className="shrink-0 text-[#f0a04b]" />
             <span className="truncate">
               {prospect.personalised ? (
-                <>Sample website made for <strong>{prospect.name}</strong> by Arqora. Not their official site.</>
+                <>Free preview made for <strong>{prospect.name}</strong> by Arqora. Not their official site yet.</>
               ) : (
                 <>Template preview by Arqora. This design can be yours.</>
               )}
             </span>
           </p>
-          <a href={makeItYours} target="_blank" rel="noopener noreferrer" className="shrink-0 rounded-lg bg-white px-3 py-1.5 font-semibold text-[#090c18]">
-            Make it yours
-          </a>
+          {prospect.personalised ? (
+            <a href="#claim" className="shrink-0 rounded-lg bg-[#f0a04b] px-3 py-1.5 font-semibold text-[#090c18]">
+              Claim · {price}
+            </a>
+          ) : (
+            <a href={makeItYours} target="_blank" rel="noopener noreferrer" className="shrink-0 rounded-lg bg-white px-3 py-1.5 font-semibold text-[#090c18]">
+              Make it yours
+            </a>
+          )}
         </div>
       </div>
 
@@ -539,6 +596,32 @@ export async function DemoSite({ niche, prospect }: { niche: Niche; prospect: Pr
         </div>
       </section>
 
+      {/* Reviews */}
+      <section id="reviews" className="scroll-mt-20 bg-[color-mix(in_srgb,var(--accent)_5%,var(--bg))] py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            {heading("What customers say", prospect.rating ? undefined : "Sample reviews. Your real Google reviews appear here.")}
+            {prospect.rating && (
+              <div className="rounded-3xl bg-[var(--surface)] px-6 py-5 shadow-[0_20px_40px_-30px_rgba(0,0,0,0.4)]">
+                <p className={display("text-4xl font-semibold")}>{prospect.rating}</p>
+                <p className="mt-1">{stars(Number(prospect.rating), 18)}</p>
+                <p className="mt-1 text-sm text-[var(--muted)]">{prospect.reviews ? `${prospect.reviews} reviews on Google` : "Rating on Google"}</p>
+              </div>
+            )}
+          </div>
+          <div className="mt-10 grid gap-4 md:grid-cols-3">
+            {reviews.map(([text, who]) => (
+              <figure key={who} className="flex flex-col rounded-3xl bg-[var(--surface)] p-6">
+                {stars(5)}
+                <blockquote className="mt-4 flex-1 leading-relaxed">“{text}”</blockquote>
+                <figcaption className="mt-5 text-sm font-semibold text-[var(--muted)]">{who}</figcaption>
+              </figure>
+            ))}
+          </div>
+          {prospect.rating && <p className="mt-4 text-xs text-[var(--muted)]">Sample reviews shown. Once live, this shows your latest Google reviews.</p>}
+        </div>
+      </section>
+
       {/* WhatsApp offers opt-in */}
       <section id="offers" className="mx-auto max-w-6xl scroll-mt-20 px-4 pb-20 sm:px-6">
         <div className="grid items-center gap-8 rounded-[2rem] bg-[var(--surface)] p-6 shadow-[0_30px_60px_-40px_rgba(0,0,0,0.4)] sm:p-10 md:grid-cols-[1fr_auto]">
@@ -571,7 +654,7 @@ export async function DemoSite({ niche, prospect }: { niche: Niche; prospect: Pr
               </li>
               <li className="flex gap-3">
                 <Clock className="mt-0.5 shrink-0 text-[var(--accent)]" size={20} />
-                {niche.hours}
+                {hours}
               </li>
               {prospect.phone.length >= 11 && (
                 <li className="flex gap-3">
@@ -596,8 +679,55 @@ export async function DemoSite({ niche, prospect }: { niche: Niche; prospect: Pr
         <Link href="/" className="hover:text-[var(--ink)]">Website by {site.name}</Link>
       </footer>
 
+      {/* Claim offer (personalised previews) */}
+      {prospect.personalised && (
+        <section id="claim" className="scroll-mt-12 bg-[#090c18] px-4 py-16 text-white sm:px-6 sm:py-20">
+          <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.1fr_1fr]">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f0a04b]">Made for {prospect.name}</p>
+              <h2 className="mt-4 font-display text-3xl font-semibold leading-[1.1] tracking-[-0.02em] sm:text-5xl">This website is ready. It can be yours in 48 hours.</h2>
+              <p className="mt-5 max-w-xl text-[#a6adc4]">
+                We put in your real services, prices, photos and timings, connect it to your WhatsApp and Google Maps, and make it live. Want a different look? We customise it for you.
+              </p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <a href={makeItYours} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 rounded-xl bg-[#f0a04b] px-7 py-4 font-semibold text-[#090c18]">
+                  <MessageCircle size={18} /> Claim this website
+                </a>
+                <a href={customise} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 rounded-xl border border-white/25 px-7 py-4 font-semibold">
+                  <Sparkles size={18} /> Customise it for me
+                </a>
+              </div>
+            </div>
+            <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-7">
+              <p className="font-display">
+                <span className="text-5xl font-semibold">{price}</span>
+                <span className="ml-2 text-[#a6adc4]">one-time</span>
+              </p>
+              <ul className="mt-6 space-y-3">
+                {[
+                  "This website with your real details",
+                  `${niche.feature.type === "order" ? "Orders" : niche.feature.type === "enquiry" ? "Enquiries" : "Bookings"} straight to your WhatsApp`,
+                  "Works perfectly on every phone",
+                  "Google Maps, reviews and call buttons",
+                  "Live in 48 hours",
+                ].map((x) => (
+                  <li key={x} className="flex gap-3">
+                    <Check size={18} className="mt-0.5 shrink-0 text-[#f0a04b]" /> {x}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-6 border-t border-white/10 pt-5 text-sm text-[#a6adc4]">
+                Then <strong className="text-white">{monthly}/month</strong> for hosting, updates and the Google review kit.
+              </p>
+              <p className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#a6adc4]">Add-ons</p>
+              <p className="mt-2 text-sm text-[#a6adc4]">Your own .com domain · WhatsApp offers to customers · extra pages · {kit.name}</p>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Arqora offer */}
-      <section className="bg-[#090c18] px-4 py-16 pb-28 text-white sm:px-6 lg:pb-16">
+      <section className="border-t border-white/10 bg-[#090c18] px-4 py-16 pb-28 text-white sm:px-6 lg:pb-16">
         <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.1fr_1fr]">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#a6adc4]">

@@ -14,6 +14,8 @@ export default function Page() {
         <h1 className="mt-3 font-display text-4xl font-semibold tracking-[-0.03em] sm:text-5xl">demo link builder</h1>
         <p className="mt-3 max-w-2xl text-ink-soft">
           Pick the industry, type the business details, and share the personalised sample site after your call. Orders and bookings on the demo go to the business&apos;s own WhatsApp, so they can try it themselves.
+          Many businesses at once? Use the{" "}
+          <Link href="/leads" className="font-semibold text-iris">bulk website generator</Link>.
         </p>
         <div className="mt-10">
           <LinkBuilder niches={niches.map((n) => ({ slug: n.slug, label: n.label }))} />

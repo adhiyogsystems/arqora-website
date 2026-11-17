@@ -248,3 +248,57 @@ export const looks: Record<string, Look> = {
     },
   },
 };
+
+/** Sample customer reviews per niche. Labelled as samples on the page; the client's real Google reviews replace them. */
+export const sampleReviews: Record<string, [string, string][]> = {
+  salon: [
+    ["Booked on WhatsApp in a minute and didn't have to wait at all. Lovely hair spa.", "Priya S."],
+    ["My bridal makeup was perfect. Everyone asked who did it!", "Sneha K."],
+    ["Clean, friendly and fairly priced. My regular place now.", "Anjali M."],
+  ],
+  coaching: [
+    ["My son's marks went from 62% to 88% in one year. Teachers really care.", "Parent of Class 10 student"],
+    ["Small batches and regular tests. Doubts get solved the same day.", "Rohan P."],
+    ["The weekly WhatsApp updates keep us informed about attendance and marks.", "Mrs. Kulkarni"],
+  ],
+  school: [
+    ["Caring teachers and a safe campus. Our daughter loves going to school.", "Parent, Class 3"],
+    ["Admission was simple and the office answered every question on WhatsApp.", "Parent, Class 1"],
+    ["Good balance of studies, sports and values.", "Parent, Class 7"],
+  ],
+  supermarket: [
+    ["I send my list on WhatsApp in the morning and it's home by evening.", "Meena J."],
+    ["Fresh vegetables and better prices than the big stores.", "Rahul D."],
+    ["The monthly offers on WhatsApp save us a lot.", "Sunita P."],
+  ],
+  bookshop: [
+    ["They had every textbook on our school list, packed and ready.", "Parent of Class 8"],
+    ["Ordered competitive exam books on WhatsApp, delivered next day.", "Amit K."],
+    ["Great stationery collection and very helpful staff.", "Neha R."],
+  ],
+  clinic: [
+    ["Booked my slot on WhatsApp and was seen on time. Very thorough doctor.", "Suresh P."],
+    ["Explains everything patiently. Our whole family's doctor now.", "Kavita D."],
+    ["Clean clinic, reasonable fees, and reminders for follow-ups.", "Mahesh G."],
+  ],
+  gym: [
+    ["Lost 9 kg in 4 months with the trainer's diet plan.", "Akash T."],
+    ["Good equipment, clean, and not overcrowded in the morning.", "Pooja N."],
+    ["Trainers actually correct your form. Best gym in the area.", "Vikram S."],
+  ],
+  restaurant: [
+    ["Ordered on WhatsApp and the food came hot. Thali is amazing.", "Nitin K."],
+    ["Perfect place for family dinners. Quick service.", "Shweta R."],
+    ["Cheaper ordering direct than on apps, and same great taste.", "Arjun M."],
+  ],
+  hotel: [
+    ["Clean rooms, hot water and very helpful staff. Booked on WhatsApp easily.", "Ramesh & family"],
+    ["Close to the temple and peaceful. Will stay again.", "Deepak S."],
+    ["Good value for money. The breakfast was lovely.", "Lata V."],
+  ],
+  bakery: [
+    ["The custom birthday cake looked exactly like the photo I sent.", "Rina P."],
+    ["Fresh bread every morning, and the cookies are addictive.", "Sameer K."],
+    ["Ordered on WhatsApp, ready on time for pickup.", "Asha D."],
+  ],
+};

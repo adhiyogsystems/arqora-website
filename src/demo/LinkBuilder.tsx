@@ -3,6 +3,8 @@
 import { Check, Copy, ExternalLink, MessageCircle } from "lucide-react";
 import { useMemo, useState, useSyncExternalStore } from "react";
 
+import { defaultPrice, leadPath } from "@/demo/lead";
+
 type NicheOption = { slug: string; label: string };
 
 const input =
@@ -15,6 +17,7 @@ export function LinkBuilder({ niches }: { niches: NicheOption[] }) {
   const [city, setCity] = useState("");
   const [phone, setPhone] = useState("");
   const [area, setArea] = useState("");
+  const [price, setPrice] = useState(defaultPrice);
   const [copied, setCopied] = useState(false);
 
   const origin = useSyncExternalStore(
@@ -23,15 +26,10 @@ export function LinkBuilder({ niches }: { niches: NicheOption[] }) {
     () => "",
   );
 
-  const link = useMemo(() => {
-    const p = new URLSearchParams();
-    if (name.trim()) p.set("n", name.trim());
-    if (city.trim()) p.set("c", city.trim());
-    if (phone.replace(/\D/g, "")) p.set("p", phone.replace(/\D/g, ""));
-    if (area.trim()) p.set("a", area.trim());
-    const qs = p.toString();
-    return `${origin}/demo/${niche}${qs ? `?${qs}` : ""}`;
-  }, [origin, niche, name, city, phone, area]);
+  const link = useMemo(
+    () => (name.trim() ? `${origin}${leadPath({ niche, name, city, phone, address: area, price })}` : `${origin}/demo/${niche}`),
+    [origin, niche, name, city, phone, area, price],
+  );
 
   const digits = phone.replace(/\D/g, "");
   const to = digits.length === 10 ? `91${digits}` : digits;
@@ -62,10 +60,16 @@ export function LinkBuilder({ niches }: { niches: NicheOption[] }) {
             <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="10-digit mobile" inputMode="tel" className={input} />
           </label>
         </div>
-        <label className="text-sm font-medium">
-          Area / address (optional)
-          <input value={area} onChange={(e) => setArea(e.target.value)} placeholder="e.g. Station Road" className={input} />
-        </label>
+        <div className="grid gap-4 sm:grid-cols-[1fr_auto]">
+          <label className="text-sm font-medium">
+            Area / address (optional)
+            <input value={area} onChange={(e) => setArea(e.target.value)} placeholder="e.g. Station Road" className={input} />
+          </label>
+          <label className="text-sm font-medium">
+            Price
+            <input value={price} onChange={(e) => setPrice(e.target.value)} className={`${input} sm:w-32`} />
+          </label>
+        </div>
       </div>
 
       <div className="grid h-fit gap-4 rounded-3xl bg-night p-6 text-white sm:p-8" data-theme="dark">
