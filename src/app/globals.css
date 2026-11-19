@@ -42,6 +42,27 @@ body {
   color: transparent;
 }
 
+/* The same idea for light backgrounds: deeper colours so it stays readable. */
+.text-gradient-dark {
+  background: linear-gradient(95deg, var(--color-brand) 0%, #8a4fd8 50%, #e07a1f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Gentle floating for device mockups. */
+.float-slow {
+  animation: float 7s ease-in-out infinite;
+}
+.float-fast {
+  animation: float 5s ease-in-out infinite reverse;
+}
+@keyframes float {
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
 /* Hero words rise in one after another (pure CSS, so text is never blank). */
 .word {
   display: inline-block;
@@ -113,6 +134,8 @@ details > summary::-webkit-details-marker {
   .word,
   .marquee,
   .orb,
+  .float-slow,
+  .float-fast,
   .fade-in {
     animation: none;
   }

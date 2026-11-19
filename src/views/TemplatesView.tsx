@@ -54,7 +54,7 @@ const text = {
   },
 };
 
-const deLabels: Record<string, string> = {
+export const deLabels: Record<string, string> = {
   salon: "Kosmetik- & Friseursalon",
   coaching: "Nachhilfe & Kurse",
   school: "Schule",
